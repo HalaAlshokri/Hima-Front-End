@@ -38,11 +38,45 @@ class SplashState extends State<Splash> {
           children: [
             Container(margin: const EdgeInsets.only(top: 130.0)),
             Image.asset(
-              'assets/hima_logo.jpeg',
+              'assets/images/hima_logo.jpeg',
               height: 180,
               width: 180,
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+////---------------------------main-----------------------
+void main() {
+  runApp(App());
+}
+
+//App class override build method to implement splash
+class App extends StatelessWidget {
+  @override
+  Widget build(context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Splash(),
+      ),
+      title: 'sign in screen',
+      theme: ThemeData(
+        useMaterial3: true,
+        // Define the default brightness and colors.
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 8, 107, 86),
+          brightness: Brightness.light,
+        ),
+        // Define the default `TextTheme`.
+        // text styling for headlines, titles, bodies of text, and more.
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontSize: 72,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

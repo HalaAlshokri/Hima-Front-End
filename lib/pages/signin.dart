@@ -19,7 +19,7 @@ class SignIn extends StatelessWidget {
             Container(margin: const EdgeInsets.only(top: 40.0)),
             //hima logo
             Image.asset(
-              'assets/hima_logo.jpeg',
+              'assets/images/hima_logo.jpeg',
               height: 170,
               width: 170,
             ),
