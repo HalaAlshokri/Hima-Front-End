@@ -44,6 +44,7 @@ class Redistribution extends StatelessWidget {
         backgroundColor: Colors.transparent, //appbar color is transparent
         elevation: 0.0, //remove appbar shadow
       ),
+      //wrapping column in container so we can align it
       body: Container(
         alignment: Alignment.center,
         child: Column(
@@ -57,6 +58,7 @@ class Redistribution extends StatelessWidget {
                 color: Color(0xFF346957),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
+              //column represents inside green contaainer
               child: Column(
                 children: [
                   SizedBox(
@@ -269,22 +271,21 @@ class Redistribution extends StatelessWidget {
                 ],
               ),
             ),
-
-            /*FloatingActionButton(
-              foregroundColor: Color(0xFF346957),
-              onPressed: () {},
-              backgroundColor: Colors.white,
-              child: const Icon(Icons.check_sharp),
-            )*/
           ],
         ),
       ),
+      //determine ffloating action button (for redistribution submission) location
       floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      //wrapping it in a container so we can push it to edge of green container
       floatingActionButton: Container(
         margin: EdgeInsets.only(top: 460),
         child: FloatingActionButton(
           foregroundColor: Color(0xFF346957),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
+
+          ///floataction button submission ACTION
           backgroundColor: Colors.white,
           child: const Icon(Icons.check_sharp),
         ),

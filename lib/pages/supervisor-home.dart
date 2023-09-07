@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'redistribution.dart';
 //Firebase
 /*import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -335,12 +336,26 @@ class SupervisorHomepage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text("تقسيم جديد؟",
+                      style: TextStyle(shadows: [
+                        Shadow(
+                          blurRadius: 5.0,
+                          // color of the shadow
+                          color: Colors.black.withOpacity(0.5),
+                          offset: Offset(0, 2),
+                        ),
+                      ], fontWeight: FontWeight.bold)),
+                  SizedBox(width: 10),
                   SizedBox(
                     height: 39,
                     width: 90,
                     child: TextButton(
-                      onPressed:
-                          () {}, //button action for distribution page---------------------------------------------IMPORTANT
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Redistribution()));
+                      }, //button action for distribution page---------------------------------------------IMPORTANT
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent),
                       child: Text('اضغط هنا',
@@ -357,16 +372,6 @@ class SupervisorHomepage extends StatelessWidget {
                               fontWeight: FontWeight.bold)),
                     ),
                   ),
-                  SizedBox(width: 10),
-                  Text("تقسيم جديد؟",
-                      style: TextStyle(shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          // color of the shadow
-                          color: Colors.black.withOpacity(0.5),
-                          offset: Offset(0, 2),
-                        ),
-                      ], fontWeight: FontWeight.bold)),
                 ],
               ),
             )
