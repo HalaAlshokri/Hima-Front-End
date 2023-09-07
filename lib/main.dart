@@ -112,6 +112,26 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            SizedBox(
+              height: 20,
+              width: 20,
+              child: IconButton(
+                iconSize: 15,
+                splashRadius: 20,
+                padding: EdgeInsets.zero,
+                /*constraints: const BoxConstraints(
+                                      minWidth: 22, maxWidth: 22),*/
+                splashColor: Colors.red,
+                onPressed: () {
+                  /*setState(() {
+                                      //contA += 1;
+                                    });*/
+                },
+                icon: const Icon(
+                  Icons.add,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -119,7 +139,8 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

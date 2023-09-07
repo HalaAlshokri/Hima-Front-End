@@ -9,6 +9,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';*/
     options: DefaultFirebaseOptions.currentPlatform,
 );*/
 
+main() {
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Directionality(
+          textDirection: TextDirection.rtl, child: SupervisorHomepage())));
+}
+
 class SupervisorHomepage extends StatelessWidget {
   const SupervisorHomepage({super.key});
 

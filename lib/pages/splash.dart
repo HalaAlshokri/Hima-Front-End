@@ -38,7 +38,7 @@ class SplashState extends State<Splash> {
           children: [
             Container(margin: const EdgeInsets.only(top: 130.0)),
             Image.asset(
-              'assets/images/hima_logo.jpeg',
+              'assets/images/Hima_logo.png',
               height: 180,
               width: 180,
             ),

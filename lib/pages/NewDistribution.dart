@@ -31,7 +31,7 @@ class newDistrbution extends StatelessWidget {
         elevation: 0,
         title: Center(
             child: Image.asset(
-          'assets/images/logo.png',
+          'assets/images/Hima_logo.png',
           fit: BoxFit.contain,
           height: 70,
         )),
