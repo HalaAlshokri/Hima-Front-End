@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 import '/pages/nonotification-Screen.dart';
 import '/pages/Back-Screen.dart';
 
+main() {
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Directionality(
+          textDirection: TextDirection.rtl, child: accessScreenState())));
+}
+
 class accessScreen extends StatefulWidget {
   const accessScreen({super.key});
 
@@ -40,8 +47,10 @@ class accessScreenState extends State<accessScreen> {
             ),
             SizedBox(height: 45),
             ElevatedButton(
-              onPressed : () {
-                Navigator.push(context,MaterialPageRoute(builder: (context)=> const backScreen()),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const backScreen()),
                 );
               },
               child: Text(
@@ -66,7 +75,10 @@ class accessScreenState extends State<accessScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context,MaterialPageRoute(builder: (context)=> const noNotificationScreen()),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const noNotificationScreen()),
                 );
               },
               child: Text(
