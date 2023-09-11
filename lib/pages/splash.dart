@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 //import signin.dart to show after splash screen
-import 'signin.dart';
+import 'signin_auth.dart';
 
 //statefullwidget to create state
 class Splash extends StatefulWidget {
@@ -50,7 +50,7 @@ class SplashState extends State<Splash> {
 }
 
 ////---------------------------main-----------------------
-void main() {
+/*void main() {
   runApp(App());
 }
 
@@ -81,4 +81,4 @@ class App extends StatelessWidget {
       ),
     );
   }
-}
+}*/

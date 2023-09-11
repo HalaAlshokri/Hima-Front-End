@@ -1,14 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '/pages/nonotification-Screen.dart';
+
 import '/pages/Back-Screen.dart';
+import '/pages/nonotification-Screen.dart';
 
 main() {
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Directionality(
-          textDirection: TextDirection.rtl, child: accessScreenState())));
+          textDirection: TextDirection.rtl, child: accessScreen())));
 }
 
 class accessScreen extends StatefulWidget {
