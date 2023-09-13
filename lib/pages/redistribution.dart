@@ -98,11 +98,6 @@ class Redistribution extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(
-                              'المنطقه  ${replaceFarsiNumber((index + 1).toString())} ',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
                             SizedBox(
                               height: 15,
                               width: 15,
@@ -140,17 +135,21 @@ class Redistribution extends StatelessWidget {
                             ),
                             SizedBox(
                                 width: 45,
-                                height: 20,
+                                height: 25,
                                 child: TextField(
+                                  textAlignVertical: TextAlignVertical.center,
+                                  textAlign: TextAlign.center,
+                                  enabled: false,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
                                   controller: _textEditingController,
                                   decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
+                                      contentPadding: EdgeInsets.all(0),
+                                      disabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
-                                        width: 2,
+                                        width: 1,
                                         color: Color(0xFF346957),
                                       )),
                                       filled: true,
@@ -190,91 +189,23 @@ class Redistribution extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            Text(
+                              'المنطقه  ${replaceFarsiNumber((index + 1).toString())} ',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
                           ],
                         ),
                       );
                     }),
                   ),
-                  /*ElevatedButton(
-                        child: Text(
-                          '✓',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 6, 107, 86)),
-                        onPressed: () {
-                          print('new Distrbution submitted');
-                        })
-                    //1st Row for area 1,2 redistribution
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //Area 2 container
-                        Container(
-                          width: 150,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "منطقة 1",
-                                style: TextStyle(
-                                  color: Color(0xFF346957),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        //Area 1 container
-                        Container(
-                          width: 150,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    //2st Row for area 1,2 redistribution
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //Area 4 container
-                        Container(
-                          margin: EdgeInsets.only(top: 15),
-                          width: 150,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        //Area 3 container
-                        Container(
-                          margin: EdgeInsets.only(top: 15),
-                          width: 150,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          ),
-                        ),
-                      ],
-                    )*/
                 ],
               ),
             ),
           ],
         ),
       ),
-      //determine ffloating action button (for redistribution submission) location
+      //determine floating action button (for redistribution submission) location
       floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
       //wrapping it in a container so we can push it to edge of green container
       floatingActionButton: Container(
@@ -288,6 +219,8 @@ class Redistribution extends StatelessWidget {
           ///floataction button submission ACTION
           backgroundColor: Colors.white,
           child: const Icon(Icons.check_sharp),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         ),
       ),
     );

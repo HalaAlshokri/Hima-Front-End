@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hima_front_end/pages/nonotification-Screen.dart';
 import 'package:hima_front_end/pages/supervisor-home.dart';
+import 'package:hima_front_end/pages/access-Screen.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -93,18 +94,18 @@ class _SignInState extends State<SignIn> {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        if (documentSnapshot.get('rool') == "supervisor") {
+        if (documentSnapshot.get('role') == "supervisor") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => SupervisorHomepage(),
+              builder: (context) => const SupervisorHomepage(),
             ),
           );
-        } else {
+        } else if (documentSnapshot.get('role') == "officer") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => noNotificationScreen(),
+              builder: (context) => const accessScreen(),
             ),
           );
         }
