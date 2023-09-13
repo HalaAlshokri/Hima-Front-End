@@ -24,7 +24,7 @@ class accessScreenState extends State<accessScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Image.asset('assets/Hima_logo.png', height: 60),
+          title: Image.asset('assets/images/Hima_logo.png', height: 60),
           titleSpacing: 10,
           backgroundColor: Color.fromARGB(255, 8, 107, 86),
           elevation: 0,
