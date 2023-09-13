@@ -336,16 +336,6 @@ class SupervisorHomepage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("تقسيم جديد؟",
-                      style: TextStyle(shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          // color of the shadow
-                          color: Colors.black.withOpacity(0.5),
-                          offset: Offset(0, 2),
-                        ),
-                      ], fontWeight: FontWeight.bold)),
-                  SizedBox(width: 10),
                   SizedBox(
                     height: 39,
                     width: 90,
@@ -355,7 +345,7 @@ class SupervisorHomepage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Redistribution()));
-                      }, //button action for distribution page---------------------------------------------IMPORTANT
+                      }, //button action for redistribution page---------------------------------------------IMPORTANT
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent),
                       child: Text('اضغط هنا',
@@ -372,6 +362,16 @@ class SupervisorHomepage extends StatelessWidget {
                               fontWeight: FontWeight.bold)),
                     ),
                   ),
+                  SizedBox(width: 10),
+                  Text("تقسيم جديد؟",
+                      style: TextStyle(shadows: [
+                        Shadow(
+                          blurRadius: 5.0,
+                          // color of the shadow
+                          color: Colors.black.withOpacity(0.5),
+                          offset: Offset(0, 2),
+                        ),
+                      ], fontWeight: FontWeight.bold)),
                 ],
               ),
             )
@@ -391,16 +391,6 @@ class CrowdAlarm extends StatefulWidget {
 }
 
 class _CrowdAlarm extends State<CrowdAlarm> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
-  //final Stream<QuerySnapshot> users = FirebaseFirestore.instance.collection('Supervisors').snapshots;
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
