@@ -213,7 +213,7 @@ class Redistribution extends StatelessWidget {
         child: FloatingActionButton(
           foregroundColor: Color(0xFF346957),
           onPressed: () {
-            Navigator.pop(context);
+            findOfficer(contA,contB,contC,contD);
           },
 
           ///floataction button submission ACTION
