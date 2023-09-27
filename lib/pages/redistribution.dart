@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 main() {
   runApp(MaterialApp(
@@ -224,5 +225,45 @@ class Redistribution extends StatelessWidget {
         ),
       ),
     );
+  }
+   Future<void> findOfficer(int A, int B, int C, int D) async{ 
+    int requiredA=0;
+    int requiredB=0;
+    int requiredC=0;
+    int requiredD=0;
+    final QuerySnapshot<Map<String,dynamic>> snapshot = await FirebaseFirestore.instance.collection("users").get();
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs){
+      final location =doc.data()['oLocation'];
+      final status =doc.data()['oStatus'];
+      final token =doc.data()['token'];
+      if((location ==2 || location ==3) && status=="Avaliable" && requiredA!=A){
+        print('assign officer with the ID: ${doc.id}, and token: $token to area 1');
+        //put the calling for the notify message here//
+        requiredA++;
+        doc.reference.update({'oStatus': "Busy"});
+        continue;
+      }
+      if((location ==1 || location ==3) && status=="Avaliable" && requiredB!=B){
+        print('assign officer with the ID: ${doc.id}, and token: $token to area 2');
+        //put the calling for the notify message here//
+        requiredB++;
+        doc.reference.update({'oStatus': "Busy"});
+        continue;
+      }
+      if((location ==2 || location ==4) && status=="Avaliable" && requiredC!=C){
+        print('assign officer with the ID: ${doc.id}, and token: $token to area 3');
+        //put the calling for the notify message here//
+        requiredC++;
+        doc.reference.update({'oStatus': "Busy"});
+        continue;
+      }
+      if((location ==2 || location ==3) && status=="Avaliable" && requiredD!=D){
+        print('assign officer with the ID: ${doc.id}, and token: $token to area 4');
+        //put the calling for the notify message here//
+        requiredD++;
+        doc.reference.update({'oStatus': "Busy"});
+        continue;
+      }
+    }
   }
 }
