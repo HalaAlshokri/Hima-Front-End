@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 main() {
   runApp(MaterialApp(
@@ -263,6 +264,27 @@ class Redistribution extends StatelessWidget {
         doc.reference.update({'oStatus': "Busy"});
         continue;
       }
+    }
+      if (A != requiredA || B != requiredB || C != requiredC || D != requiredD) {
+      Fluttertoast.showToast(
+        msg: "عذرًا. لايتوفر عدد كافي من العناصر لهذا التقسيم، سيتم إشعار العناصر المتاحة فقط.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor:Color(0xFF346957),
+        textColor: Colors.white,
+        fontSize: 15.0,
+    );  
+    } else {
+      Fluttertoast.showToast(
+        msg: "تم الإرسال!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor:Color(0xFF346957),
+        textColor: Colors.white,
+        fontSize: 15.0
+    );
     }
   }
 }
