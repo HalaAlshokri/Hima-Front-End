@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hima_front_end/pages/signin_auth.dart';
+
 import 'redistribution.dart';
 //Firebase
 /*import 'package:firebase_core/firebase_core.dart';
@@ -17,8 +21,22 @@ main() {
           textDirection: TextDirection.rtl, child: SupervisorHomepage())));
 }
 
-class SupervisorHomepage extends StatelessWidget {
+class SupervisorHomepage extends StatefulWidget {
   const SupervisorHomepage({super.key});
+
+  @override
+  State<SupervisorHomepage> createState() => SupervisorState();
+}
+
+class SupervisorState extends State<SupervisorHomepage> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  //signout:
+  signOut() async {
+    await auth.signOut();
+    await SessionManager().destroy();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SignIn()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +47,16 @@ class SupervisorHomepage extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 100, //appbar height
         //padding method necessary to push logo to right
-        title: Padding(
-          padding: EdgeInsets.all(10),
-          child: Image.asset(
-            //imported hima logo from assets folder
-            'assets/images/Hima_logo.png',
-            scale: 8, //scaled down due to big size
+        title: Row(children: [
+          Image.asset('assets/logo.png', height: 60),
+          FloatingActionButton(
+            onPressed: () {
+              signOut();
+            },
+            child: Icon(Icons.logout_rounded),
+            backgroundColor: Color.fromARGB(255, 99, 154, 125),
           ),
-        ),
+        ]),
         backgroundColor: Colors.transparent, //appbar color is transparent
         elevation: 0.0, //remove appbar shadow
       ),
