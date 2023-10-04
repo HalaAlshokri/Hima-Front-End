@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:hima_front_end/pages/nonotification-Screen.dart';
 import 'package:hima_front_end/pages/splash.dart';
+import 'package:hima_front_end/pages/supervisor-home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +38,27 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: Splash(),
+      home: startScreen(),
     );
+  }
+
+  Widget startScreen() {
+    if (getID() == '' || getID() == null) {
+      return Splash();
+    } else if (getRole() == "officer") {
+      return noNotificationScreen();
+    } else {
+      return SupervisorHomepage();
+    }
+  }
+
+  //get session id to make statful session
+  Future<dynamic> getID() async {
+    return await SessionManager().get("id");
+  }
+
+  //get session role to redirect to correct homepage
+  Future<dynamic> getRole() async {
+    return await SessionManager().get("role");
   }
 }
