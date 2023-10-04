@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 main() {
   runApp(MaterialApp(
@@ -15,7 +17,6 @@ String replaceFarsiNumber(String input) {
   for (int i = 0; i < english.length; i++) {
     input = input.replaceAll(english[i], farsi[i]);
   }
-
   return input;
 }
 
@@ -213,7 +214,7 @@ class Redistribution extends StatelessWidget {
         child: FloatingActionButton(
           foregroundColor: Color(0xFF346957),
           onPressed: () {
-            Navigator.pop(context);
+            findOfficer(contA,contB,contC,contD);
           },
 
           ///floataction button submission ACTION
@@ -224,5 +225,66 @@ class Redistribution extends StatelessWidget {
         ),
       ),
     );
+  }
+   Future<void> findOfficer(int A, int B, int C, int D) async{ 
+    int requiredA=0;
+    int requiredB=0;
+    int requiredC=0;
+    int requiredD=0;
+    final QuerySnapshot<Map<String,dynamic>> snapshot = await FirebaseFirestore.instance.collection("users").get();
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs){
+      final location =doc.data()['oLocation'];
+      final status =doc.data()['oStatus'];
+      final token =doc.data()['token'];
+      if((location ==2 || location ==3) && status=="Avaliable" && requiredA!=A){
+        print('assign officer with the ID: ${doc.id}, and token: $token to area 1');
+        //put the calling for the notify message here//
+        requiredA++;
+        doc.reference.update({'oStatus': "Busy"});
+        continue;
+      }
+      if((location ==1 || location ==3) && status=="Avaliable" && requiredB!=B){
+        print('assign officer with the ID: ${doc.id}, and token: $token to area 2');
+        //put the calling for the notify message here//
+        requiredB++;
+        doc.reference.update({'oStatus': "Busy"});
+        continue;
+      }
+      if((location ==2 || location ==4) && status=="Avaliable" && requiredC!=C){
+        print('assign officer with the ID: ${doc.id}, and token: $token to area 3');
+        //put the calling for the notify message here//
+        requiredC++;
+        doc.reference.update({'oStatus': "Busy"});
+        continue;
+      }
+      if((location ==2 || location ==3) && status=="Avaliable" && requiredD!=D){
+        print('assign officer with the ID: ${doc.id}, and token: $token to area 4');
+        //put the calling for the notify message here//
+        requiredD++;
+        doc.reference.update({'oStatus': "Busy"});
+        continue;
+      }
+    }
+      if (A != requiredA || B != requiredB || C != requiredC || D != requiredD) {
+      Fluttertoast.showToast(
+        msg: "عذرًا. لايتوفر عدد كافي من العناصر لهذا التقسيم، سيتم إشعار العناصر المتاحة فقط.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor:Color(0xFF346957),
+        textColor: Colors.white,
+        fontSize: 15.0,
+    );  
+    } else {
+      Fluttertoast.showToast(
+        msg: "تم الإرسال!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor:Color(0xFF346957),
+        textColor: Colors.white,
+        fontSize: 15.0
+    );
+    }
   }
 }
