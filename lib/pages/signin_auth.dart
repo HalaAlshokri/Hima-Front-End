@@ -101,7 +101,7 @@ class _SignInState extends State<SignIn> {
         .then((DocumentSnapshot documentSnapshot) async {
       if (documentSnapshot.exists) {
         var sessionManager = SessionManager();
-        await sessionManager.set("token", user.uid);
+        await sessionManager.set("id", documentSnapshot.get('email'));
         await sessionManager.set("role", documentSnapshot.get('role'));
         if (documentSnapshot.get('role') == "supervisor") {
           Navigator.pushReplacement(

@@ -14,8 +14,9 @@ class noNotificationScreenState extends State<noNotificationScreen> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   //signout:
   signOut() async {
-    await auth.signOut();
+
     await SessionManager().destroy();
+    await auth.signOut();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => SignIn()));
   }
@@ -26,7 +27,7 @@ class noNotificationScreenState extends State<noNotificationScreen> {
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
           title: Row(children: [
-            Image.asset('assets/logo.png', height: 60),
+            Image.asset('assets/images/Hima_logo.png', height: 60),
             FloatingActionButton(
               onPressed: () {
                 signOut();
@@ -46,7 +47,7 @@ class noNotificationScreenState extends State<noNotificationScreen> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           SizedBox(height: 20),
-          Image.asset('assets/Group 27.png'),
+          Image.asset('assets/images/notification off.png'),
         ])));
   }
 }

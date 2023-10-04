@@ -38,12 +38,18 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: (getID() == '' || getID() == null)
-          ? Splash()
-          : (getRole() == "officer")
-              ? noNotificationScreen()
-              : SupervisorHomepage(),
+      home: startScreen(),
     );
+  }
+
+  Widget startScreen() {
+    if (getID() == '' || getID() == null) {
+      return Splash();
+    } else if (getRole() == "officer") {
+      return noNotificationScreen();
+    } else {
+      return SupervisorHomepage();
+    }
   }
 
   //get session id to make statful session

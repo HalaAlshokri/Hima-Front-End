@@ -32,8 +32,9 @@ class SupervisorState extends State<SupervisorHomepage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   //signout:
   signOut() async {
-    await auth.signOut();
+
     await SessionManager().destroy();
+    await auth.signOut();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => SignIn()));
   }
@@ -48,10 +49,10 @@ class SupervisorState extends State<SupervisorHomepage> {
         toolbarHeight: 100, //appbar height
         //padding method necessary to push logo to right
         title: Row(children: [
-          Image.asset('assets/logo.png', height: 60),
+          Image.asset('assets/images/Hima_logo.png', height: 60),
           FloatingActionButton(
-            onPressed: () {
-              signOut();
+            onPressed: () async{
+               await signOut();
             },
             child: Icon(Icons.logout_rounded),
             backgroundColor: Color.fromARGB(255, 99, 154, 125),
