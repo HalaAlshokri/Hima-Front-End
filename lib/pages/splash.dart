@@ -32,15 +32,15 @@ class SplashState extends State<Splash> {
   Widget build(context) {
     return Scaffold(
       body: Container(
-        color: const Color.fromARGB(255, 8, 107, 86),
+        color: Color.fromARGB(255, 255, 255, 255),
         alignment: Alignment.center,
         child: Column(
           children: [
             Container(margin: const EdgeInsets.only(top: 130.0)),
             Image.asset(
               'assets/images/Hima_logo.png',
-              height: 180,
-              width: 180,
+              height: 100,
+              width: 113,
             ),
           ],
         ),

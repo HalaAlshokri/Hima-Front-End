@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         // Define the default brightness and colors.
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 8, 107, 86),
+          seedColor: const Color.fromARGB(255, 99, 154, 125),
           brightness: Brightness.light,
         ),
         // Define the default `TextTheme`.
@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget startScreen() {
-    if (getID() == '' || getID() == null) {
+    if (getID() == '') {
       return Splash();
     } else if (getRole() == "officer") {
       return noNotificationScreen();

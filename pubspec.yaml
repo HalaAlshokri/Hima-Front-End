@@ -78,6 +78,7 @@ flutter:
     - assets/images/Hima_logo.png
     - assets/images/notification off.png
     - assets/images/notification on.png
+    - assets/images/Hima_logo.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
