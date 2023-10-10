@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: startScreen(),
+      home: startScreen(), //method to spicify the show screen
     );
   }
 

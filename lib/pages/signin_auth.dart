@@ -11,13 +11,12 @@ class SignIn extends StatefulWidget {
 }
 
 class SignInState extends State<SignIn> {
-  bool _isObscure3 = true;
-  bool visible = false;
+  bool _isObscure3 = true; //to show the password or not
   final _formkey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  String errMessage = "";
+  String errMessage =
+      ""; //error message will be shown if there is in submitting the entries
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +26,9 @@ class SignInState extends State<SignIn> {
           children: <Widget>[
             Container(
               color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.70,
               child: Center(
                 child: Container(
-                  margin: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.fromLTRB(12.0, 50.0, 12.0, 12.0),
                   child: Form(
                     key: _formkey,
                     child: Column(
@@ -43,12 +40,12 @@ class SignInState extends State<SignIn> {
                         ),
                         //hima logo
                         Image.asset(
-                          'assets/images/Hima_logo.png',
+                          'assets/images/Hima_logo.jpg',
                           height: 75,
                           width: 84,
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 40,
                         ),
                         //emailfield
                         emailField(),
@@ -65,21 +62,15 @@ class SignInState extends State<SignIn> {
                           errMessage,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                              fontSize: 12, color: Color(0xFFF3D758)),
+                              fontSize: 15,
+                              color: Color(0xFFF3D758),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 20,
                         ),
                         //button
                         submitButton(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Visibility(
-                            maintainSize: true,
-                            maintainAnimation: true,
-                            maintainState: true,
-                            visible: visible,
-                            child: const CircularProgressIndicator(
-                              color: Colors.white,
-                            )),
                       ],
                     ),
                   ),
@@ -119,7 +110,7 @@ class SignInState extends State<SignIn> {
           );
         }
       } else {
-        errMessage = "البريد الالكتروني أو كلمة السر غير صحيحة";
+        errMessage = "البريد الالكتروني أو كلمة المرور خاطئة\nحاول مرة أخرى";
         print('Document does not exist on the database');
       }
     });
@@ -135,10 +126,10 @@ class SignInState extends State<SignIn> {
         route();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          errMessage = "البريد الالكتروني أو كلمة المرور غير صحيحة";
+          errMessage = "البريد الالكتروني أو كلمة المرور خاطئة\nحاول مرة أخرى";
           print('No user found for that email.');
         } else if (e.code == 'wrong-password') {
-          errMessage = "البريد الالكتروني أو كلمة السر غير صحيحة";
+          errMessage = "البريد الالكتروني أو كلمة المرور خاطئة\nحاول مرة أخرى";
           print('Wrong password provided for that user.');
         }
       }
@@ -147,29 +138,25 @@ class SignInState extends State<SignIn> {
 
   Widget emailField() {
     return Container(
-      margin: const EdgeInsets.all(15.0),
-      padding: const EdgeInsets.all(8.0),
-      /*decoration: BoxDecoration(
-          border:
-              Border.all(color: Color.fromARGB(255, 99, 154, 125), width: 4.0),
-          borderRadius: BorderRadius.all(
-              Radius.circular(5.0)
-              ),
-        ),*/
-      color: Colors.white,
+      margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 1.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 1.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: const Color.fromARGB(255, 99, 154, 125), width: 1.0),
+        borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+        color: Colors.white,
+      ),
       width: 239.0,
-      height: 47.0,
+      height: 37.0,
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: TextFormField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
-          textDirection: TextDirection.rtl,
-          textAlign: TextAlign.right,
           decoration: const InputDecoration(
-            hintTextDirection: TextDirection.rtl,
+            border: InputBorder.none,
             icon: Icon(Icons.person, color: Color.fromARGB(255, 99, 154, 125)),
-            labelText: (' البريد الالكتروني'),
+            hintText: (' البريد الالكتروني'),
             labelStyle: TextStyle(
               fontSize: 15,
             ),
@@ -195,30 +182,28 @@ class SignInState extends State<SignIn> {
 
   Widget passwordField() {
     return Container(
-      margin: const EdgeInsets.all(15.0),
-      padding: const EdgeInsets.all(8.0),
-      /*decoration: BoxDecoration(
-          border:
-              Border.all(color: Color.fromARGB(255, 99, 154, 125), width: 4.0),
-          borderRadius: BorderRadius.all(
-              Radius.circular(5.0)
-              ),
-        ),*/
-      color: Colors.white,
+      margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 1.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 1.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: const Color.fromARGB(255, 99, 154, 125), width: 1.0),
+        borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+        color: Colors.white,
+      ),
       width: 239.0,
-      height: 47.0,
+      height: 37.0,
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: TextFormField(
           controller: passwordController,
           obscureText: _isObscure3,
-          textDirection: TextDirection.rtl,
-          textAlign: TextAlign.right,
           decoration: InputDecoration(
-            hintTextDirection: TextDirection.rtl,
+            border: InputBorder.none,
             suffixIcon: IconButton(
-                icon:
-                    Icon(_isObscure3 ? Icons.visibility : Icons.visibility_off),
+                icon: Icon(
+                  _isObscure3 ? Icons.visibility : Icons.visibility_off,
+                  color: Color.fromARGB(255, 99, 154, 125),
+                ),
                 onPressed: () {
                   setState(() {
                     _isObscure3 = !_isObscure3;
@@ -228,11 +213,9 @@ class SignInState extends State<SignIn> {
               Icons.lock,
               color: Color.fromARGB(255, 99, 154, 125),
             ),
-            labelText: 'كلمة المرور',
             hintText: 'كلمة المرور',
             labelStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontSize: 15,
             ),
           ),
           validator: (value) {
@@ -257,13 +240,10 @@ class SignInState extends State<SignIn> {
   Widget submitButton() {
     return MaterialButton(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
       elevation: 5.0,
       height: 40,
       onPressed: () {
-        setState(() {
-          visible = true;
-        });
         signIn(emailController.text, passwordController.text);
       },
       color: const Color.fromARGB(255, 99, 154, 125),
@@ -271,7 +251,7 @@ class SignInState extends State<SignIn> {
         "    تسجيل الدخول     ",
         style: TextStyle(
           color: Colors.white,
-          fontSize: 20,
+          fontSize: 15,
           fontWeight: FontWeight.bold,
         ),
       ),
