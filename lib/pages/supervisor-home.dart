@@ -65,13 +65,6 @@ class SupervisorState extends State<SupervisorHomepage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    //handling the number of officers in an area
-    numOfficerInArea();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       //Whole page white background

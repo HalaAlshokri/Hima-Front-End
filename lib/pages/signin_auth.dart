@@ -161,7 +161,7 @@ class SignInState extends State<SignIn> {
               fontSize: 15,
             ),
           ),
-          validator: (value) {
+          validator: (String? value) {
             if (value!.isEmpty) {
               return "يجب تعبئة البريد الالكتروني";
             }
@@ -218,7 +218,7 @@ class SignInState extends State<SignIn> {
               fontSize: 15,
             ),
           ),
-          validator: (value) {
+          validator: (String? value) {
             RegExp regex = RegExp(r'^.{5,}$');
             if (value!.isEmpty) {
               return "يجب تعبئة كلمة المرور";
