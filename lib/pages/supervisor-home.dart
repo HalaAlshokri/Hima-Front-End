@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:hima_front_end/pages/officerList.dart';
 //import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hima_front_end/pages/signin_auth.dart';
 
@@ -97,131 +98,143 @@ class SupervisorState extends State<SupervisorHomepage> {
         elevation: 0.0, //remove appbar shadow
       ),
       //wrapped scaffold body with container to control alignment
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.only(top: 10),
-          color: Colors.white,
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Image.asset(
-                'assets/images/ring.png',
-                height: 84,
-                width: 84,
-              ),
+      body: Container(
+        height: 600,
+        padding: const EdgeInsets.only(top: 10),
+        color: Colors.white,
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            Image.asset(
+              'assets/images/ring.png',
+              height: 84,
+              width: 84,
+            ),
 
-              //Container for areas feed buttons
-              //Represents distribution green rectangle
-              Container(
-                margin: const EdgeInsets.all(6),
-                padding: const EdgeInsets.all(6),
-                child: SingleChildScrollView(
-                  //scrollDirection: Axis.horizontal,
-                  child: Column(
-                    children: [
-                      const Text(
-                        "لا يوجد زحام",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 99, 154, 125),
-                        ),
-                      ),
-                      const SizedBox(
-                          height:
-                              15), //to space out components in green container (rectangle)
-                      //row container for area word
-                      Row(
-                        children: [
-                          //just to make space
-                          Container(
-                            color: Colors.white,
-                            height: 27,
-                            width: 168,
-                          ),
-                          //the right container which show area word
-                          Container(
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.fromLTRB(3, 3, 8, 3),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color:
-                                        const Color.fromARGB(255, 99, 154, 125),
-                                    width: 1.0),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(6.0)),
-                                color: const Color.fromARGB(255, 99, 154, 125),
-                              ),
-                              height: 32,
-                              width: 80,
-                              child: const Text(
-                                "المنطقة",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                        ],
-                      ),
-                      //container for every area and number of officers ber assigned officers in area
-                      list(),
-                    ],
-                  ),
-                ),
-              ),
-              //Container for last row in body column (for new distribution button)
-              Container(
-                margin: const EdgeInsets.only(top: 9),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            //Container for areas feed buttons
+            //Represents distribution green rectangle
+            Container(
+              margin: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(6),
+              child: SingleChildScrollView(
+                //scrollDirection: Axis.horizontal,
+                child: Column(
                   children: [
-                    SizedBox(
-                      height: 25,
-                      width: 85,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Redistribution()));
-                        }, //button action for redistribution page---------------------------------------------IMPORTANT
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent),
-                        child: Text('اضغط هنا',
-                            style: TextStyle(
-                                shadows: [
-                                  Shadow(
-                                    blurRadius: 5.0,
-                                    // color of the shadow
-                                    color: Colors.black.withOpacity(0.5),
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold)),
+                    const Text(
+                      "لا يوجد زحام",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 99, 154, 125),
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Text("تقسيم جديد؟",
-                        style: TextStyle(
-                          shadows: [
+                    const SizedBox(
+                        height:
+                            15), //to space out components in green container (rectangle)
+                    //row container for area word
+                    Row(
+                      children: [
+                        //just to make space
+                        Container(
+                          color: Colors.white,
+                          height: 27,
+                          width: 168,
+                        ),
+                        //the right container which show area word
+                        Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.fromLTRB(3, 3, 8, 3),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color:
+                                      const Color.fromARGB(255, 99, 154, 125),
+                                  width: 1.0),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(6.0)),
+                              color: const Color.fromARGB(255, 99, 154, 125),
+                            ),
+                            height: 32,
+                            width: 80,
+                            child: const Text(
+                              "المنطقة",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                      ],
+                    ),
+                    //container for every area and number of officers ber assigned officers in area
+                    list(),
+                  ],
+                ),
+              ),
+            ),
+            //Container for last row in body column (for new distribution button)
+            Container(
+              margin: const EdgeInsets.only(top: 9),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(width: 40),
+                  SizedBox(
+                    height: 25,
+                    width: 85,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Redistribution()));
+                      }, //button action for redistribution page---------------------------------------------IMPORTANT
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent),
+                      child: Text('اضغط هنا',
+                          style: TextStyle(shadows: [
                             Shadow(
                               blurRadius: 5.0,
                               // color of the shadow
                               color: Colors.black.withOpacity(0.5),
                               offset: const Offset(0, 2),
                             ),
-                          ],
-                          fontWeight: FontWeight.bold,
-                          color: const Color.fromARGB(255, 99, 154, 125),
-                        )),
-                  ],
-                ),
+                          ], color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    "تقسيم جديد؟",
+                    style: TextStyle(
+                      shadows: [
+                        Shadow(
+                          blurRadius: 5.0,
+                          // color of the shadow
+                          color: Colors.black.withOpacity(0.5),
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 99, 154, 125),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  FloatingActionButton(
+                    mini: true,
+                    onPressed: () async {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OfficerList()));
+                    },
+                    backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+                    child: const Icon(Icons.people_rounded,
+                        size: 20, color: Colors.white),
+                  ),
+                ],
               ),
-              const SizedBox(height: 50),
-            ],
-          ),
+            ),
+            const SizedBox(height: 50),
+          ],
         ),
       ),
     );
