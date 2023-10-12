@@ -76,9 +76,16 @@ class RedistributionState extends State<Redistribution> {
                   left: 10, top: 30, right: 10, bottom: 10),
               padding: const EdgeInsets.only(
                   left: 20, top: 20, right: 20, bottom: 0),
-              width: 312.0,
-              height: 274.0,
-              color: const Color.fromARGB(255, 255, 255, 255),
+              width: 315.0,
+              height: 276.0,
+              //color: Color.fromARGB(255, 202, 223, 212),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: const Color.fromARGB(255, 202, 223, 212),
+                    width: 1.0),
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                color: const Color.fromARGB(255, 202, 223, 212),
+              ),
               //column represents inside contaainer
               child: Column(
                 children: [
@@ -158,25 +165,34 @@ class RedistributionState extends State<Redistribution> {
             alignment: Alignment.center,
             height: 50,
             width: 220,
-            color: Colors.white,
             //Row has different container boxes of information
             child: Row(
               children: [
                 //first left widget for decrement
                 decrementButton(index),
+                const SizedBox(width: 10),
                 //the number of officer in each area
                 Container(
-                    color: Colors.white,
-                    width: 80,
-                    alignment: Alignment.center,
-                    child: Text(
-                      cont[index].toString(),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 15,
-                          color: Color.fromARGB(255, 99, 154, 125),
-                          fontWeight: FontWeight.bold),
-                    )),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 99, 154, 125),
+                        width: 2.0),
+                    borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                  ),
+                  height: 27,
+                  width: 60,
+                  alignment: Alignment.center,
+                  child: Text(
+                    cont[index].toString(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 15,
+                        color: Color.fromARGB(255, 99, 154, 125),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(width: 10),
                 // middle widget for increment
                 incrementButton(index),
                 //the right container which show the area number
