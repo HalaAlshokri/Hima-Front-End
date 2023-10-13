@@ -40,7 +40,7 @@ class RedistributionState extends State<Redistribution> {
         toolbarHeight: 60, //appbar height
         //padding method necessary to push logo to right
         title: Image.asset(
-          'images/Hima_logo.jpg',
+          'assets/images/Hima_logo.jpg',
           height: 45,
           width: 45,
         ),
@@ -57,7 +57,7 @@ class RedistributionState extends State<Redistribution> {
         child: Column(
           children: [
             Image.asset(
-              'images/ring.png',
+              'assets/images/ring.png',
               height: 84,
               width: 84,
             ),

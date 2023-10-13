@@ -64,7 +64,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
               child: Column(
                 children: [
                   const SizedBox(height: 120),
-                  Image.asset('images/noassigned.png'),
+                  Image.asset('assets/images/noassigned.png'),
                 ],
               ),
             );
@@ -85,7 +85,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 60),
-          Image.asset('images/ringing.png'),
+          Image.asset('assets/images/ringing.png'),
           const SizedBox(height: 20),
           const Text(
             'تعيين جديد\nفي منطقة',
