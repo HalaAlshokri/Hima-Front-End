@@ -12,6 +12,7 @@ class OfficerHomepage extends StatefulWidget {
 
 class OfficerHomepageState extends State<OfficerHomepage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  bool isNotify = false;
   //signout:
   signOut() async {
     await SessionManager().destroy();
@@ -22,7 +23,17 @@ class OfficerHomepageState extends State<OfficerHomepage> {
 
   Future<void> getMessage() async {
     //message method
-    await Future.delayed(const Duration(seconds: 3), () {});
+    await Future.delayed(const Duration(seconds: 5), () {});
+    setState(() {
+      isNotify = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //handling to show the sign in screen
+    getMessage();
   }
 
   @override
@@ -55,25 +66,27 @@ class OfficerHomepageState extends State<OfficerHomepage> {
             255, 255, 255, 255), //appbar color is transparent
         elevation: 0.0, //remove appbar shadow
       ),
-      body: FutureBuilder(
-        future: getMessage(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          //snapshot.inState(ConnectionState.waiting);
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Column(
-                children: [
-                  const SizedBox(height: 120),
-                  Image.asset('assets/images/noassigned.png'),
-                ],
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            return notification();
-          }
-        },
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        child: screen(isNotify),
+      ),
+    );
+  }
+
+  Widget screen(bool isNotify) {
+    if (isNotify) {
+      return notification();
+    }
+    return noNotification();
+  }
+
+  Widget noNotification() {
+    return Center(
+      child: Column(
+        children: [
+          const SizedBox(height: 120),
+          Image.asset('assets/images/noassigned.png'),
+        ],
       ),
     );
   }
