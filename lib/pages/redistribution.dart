@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hima_front_end/pages/supervisor-home.dart';
 
 main() {
   runApp(MaterialApp(
@@ -20,271 +21,357 @@ String replaceFarsiNumber(String input) {
   return input;
 }
 
-class Redistribution extends StatelessWidget {
-  //const Redistribution({super.key});
+class Redistribution extends StatefulWidget {
+  const Redistribution({super.key});
+
+  @override
+  State<Redistribution> createState() => RedistributionState();
+}
+
+class RedistributionState extends State<Redistribution> {
+  //const RedistributionState({super.key});
   int initialValue = 50;
+  //initial value of officer in each area
+  List<int> cont = [50, 50, 50, 50];
   @override
   Widget build(BuildContext context) {
-    int contA = initialValue;
-    int contB = initialValue;
-    int contC = initialValue;
-    int contD = initialValue;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true, //to center AppBar content
-        toolbarHeight: 300, //appbar height
+        toolbarHeight: 60, //appbar height
         //padding method necessary to push logo to right
-        title: Padding(
-          padding: EdgeInsets.all(10),
-          child: Image.asset(
-            //imported hima logo from assets folder
-            'assets/images/Hima_logo.png',
-            scale: 8, //scaled down due to big size
-          ),
+        title: Image.asset(
+          'assets/images/Hima_logo.jpg',
+          height: 45,
+          width: 45,
         ),
-        backgroundColor: Colors.transparent, //appbar color is transparent
+        backgroundColor: const Color.fromARGB(
+            255, 255, 255, 255), //appbar color is transparent
         elevation: 0.0, //remove appbar shadow
       ),
-      //wrapping column in container so we can align it
+      //container for hole body
       body: Container(
+        height: 600,
+        padding: const EdgeInsets.only(top: 10),
+        color: Colors.white,
         alignment: Alignment.center,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 0),
-              width: 370.0,
-              height: 230.0,
-              decoration: BoxDecoration(
-                color: Color(0xFF346957),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+            Image.asset(
+              'assets/images/ring.png',
+              height: 84,
+              width: 84,
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              "توزيع جديد",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 99, 154, 125),
               ),
-              //column represents inside green contaainer
+            ),
+            //container for rows of info
+            Container(
+              margin: const EdgeInsets.only(
+                  left: 10, top: 30, right: 10, bottom: 10),
+              padding: const EdgeInsets.only(
+                  left: 20, top: 20, right: 20, bottom: 0),
+              width: 315.0,
+              height: 276.0,
+              //color: Color.fromARGB(255, 202, 223, 212),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: const Color.fromARGB(255, 202, 223, 212),
+                    width: 1.0),
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                color: const Color.fromARGB(255, 202, 223, 212),
+              ),
+              //column represents inside contaainer
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 50,
-                    width: 300,
-                    child: Text(
-                      "تقسيم جديد",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          // color of the shadow
-                          color: Colors.black.withOpacity(0.5),
-                          offset: Offset(0, 2),
-                        )
-                      ], fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    childAspectRatio: (4 / 1.5),
-                    children: List.generate(4, (index) {
-                      TextEditingController _textEditingController =
-                          TextEditingController()
-                            ..text =
-                                replaceFarsiNumber(initialValue.toString());
-                      return Container(
-                        //width: 100,
-                        //height: 100,
-                        margin: EdgeInsets.all(5),
-                        padding: EdgeInsets.all(5),
+                  //first row for illustration of content
+                  Row(
+                    children: [
+                      //for officers number word
+                      Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.fromLTRB(3, 3, 8, 3),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFFfafafa),
+                          border: Border.all(
+                              color: const Color.fromARGB(255, 99, 154, 125),
+                              width: 1.0),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(6.0)),
+                          color: const Color.fromARGB(255, 99, 154, 125),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 15,
-                              width: 15,
-                              child: IconButton(
-                                iconSize: 15,
-                                //splashRadius: 20,
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(
-                                    minWidth: 22, maxWidth: 22),
-                                onPressed: () {
-                                  if (index == 0) {
-                                    contA--;
-                                    _textEditingController.text =
-                                        replaceFarsiNumber(contA.toString());
-                                  } else if (index == 1) {
-                                    contB--;
-                                    _textEditingController.text =
-                                        replaceFarsiNumber(contB.toString());
-                                  } else if (index == 2) {
-                                    contC--;
-                                    _textEditingController.text =
-                                        replaceFarsiNumber(contC.toString());
-                                  } else if (index == 3) {
-                                    contD--;
-                                    _textEditingController.text =
-                                        replaceFarsiNumber(contD.toString());
-                                  }
-                                  print("PRESSED - at index $index");
-                                  //setState(() {});
-                                },
-                                icon: const Icon(
-                                  Icons.remove,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                                width: 45,
-                                height: 25,
-                                child: TextField(
-                                  textAlignVertical: TextAlignVertical.center,
-                                  textAlign: TextAlign.center,
-                                  enabled: false,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
-                                  controller: _textEditingController,
-                                  decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(0),
-                                      disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                        width: 1,
-                                        color: Color(0xFF346957),
-                                      )),
-                                      filled: true,
-                                      fillColor: Colors.white),
-                                )),
-                            SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: IconButton(
-                                iconSize: 15,
-                                //splashRadius: 20,
-                                padding: EdgeInsets.zero,
-                                splashColor: Colors.red,
-                                onPressed: () {
-                                  if (index == 0) {
-                                    contA++;
-                                    _textEditingController.text =
-                                        replaceFarsiNumber(contA.toString());
-                                  } else if (index == 1) {
-                                    contB++;
-                                    _textEditingController.text =
-                                        replaceFarsiNumber(contB.toString());
-                                  } else if (index == 2) {
-                                    contC++;
-                                    _textEditingController.text =
-                                        replaceFarsiNumber(contC.toString());
-                                  } else if (index == 3) {
-                                    contD++;
-                                    _textEditingController.text =
-                                        replaceFarsiNumber(contD.toString());
-                                  }
-                                  print("PRESSED + at index $index");
-                                  //setState(() {});
-                                },
-                                icon: const Icon(
-                                  Icons.add,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              'المنطقه  ${replaceFarsiNumber((index + 1).toString())} ',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                        height: 27,
+                        width: 168,
+                        child: fixedTextStyle("عدد الضباط"),
+                      ),
+                      //the right container which show area word
+                      Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.fromLTRB(3, 3, 8, 3),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: const Color.fromARGB(255, 99, 154, 125),
+                              width: 1.0),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(6.0)),
+                          color: const Color.fromARGB(255, 99, 154, 125),
                         ),
-                      );
-                    }),
+                        height: 27,
+                        width: 80,
+                        child: fixedTextStyle("المنطقة"),
+                      ),
+                    ],
                   ),
+                  //list to handle each row of area
+                  list(),
                 ],
               ),
             ),
+            //submuting button widget
+            submitButton(),
           ],
-        ),
-      ),
-      //determine floating action button (for redistribution submission) location
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
-      //wrapping it in a container so we can push it to edge of green container
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(top: 460),
-        child: FloatingActionButton(
-          foregroundColor: Color(0xFF346957),
-          onPressed: () {
-            findOfficer(contA,contB,contC,contD);
-          },
-
-          ///floataction button submission ACTION
-          backgroundColor: Colors.white,
-          child: const Icon(Icons.check_sharp),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         ),
       ),
     );
   }
-   Future<void> findOfficer(int A, int B, int C, int D) async{ 
-    int requiredA=0;
-    int requiredB=0;
-    int requiredC=0;
-    int requiredD=0;
-    final QuerySnapshot<Map<String,dynamic>> snapshot = await FirebaseFirestore.instance.collection("users").get();
-    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs){
-      final location =doc.data()['oLocation'];
-      final status =doc.data()['oStatus'];
-      final token =doc.data()['token'];
-      if((location ==2 || location ==3) && status=="Avaliable" && requiredA!=A){
-        print('assign officer with the ID: ${doc.id}, and token: $token to area 1');
+
+  //to hangle repeated text style
+  Widget fixedTextStyle(String word) {
+    return Text(
+      word,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+          fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold),
+    );
+  }
+
+  //listview
+  Widget list() {
+    return SizedBox(
+      //size of the outer box list
+      height: 220,
+      width: 309,
+      //list view builder
+      child: ListView.builder(
+        padding: const EdgeInsets.all(5),
+        itemCount: 4, //number of items
+        itemBuilder: (BuildContext context, int index) {
+          //container holds row information
+          return Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: 220,
+            //Row has different container boxes of information
+            child: Row(
+              children: [
+                //first left widget for decrement
+                decrementButton(index),
+                const SizedBox(width: 10),
+                //the number of officer in each area
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 99, 154, 125),
+                        width: 2.0),
+                    borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                  ),
+                  height: 27,
+                  width: 60,
+                  alignment: Alignment.center,
+                  child: Text(
+                    cont[index].toString(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        fontSize: 15,
+                        color: Color.fromARGB(255, 99, 154, 125),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                // middle widget for increment
+                incrementButton(index),
+                //the right container which show the area number
+                Container(
+                    margin: const EdgeInsets.fromLTRB(17, 3, 8, 3),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: const Color.fromARGB(255, 99, 154, 125),
+                          width: 1.0),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(6.0)),
+                      color: const Color.fromARGB(255, 99, 154, 125),
+                    ),
+                    height: 27,
+                    width: 77,
+                    child: Text(
+                      "${++index}",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    )),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  //handling the increment button
+  Widget incrementButton(int index) {
+    index--;
+    return MaterialButton(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(7.0))),
+        elevation: 5.0,
+        height: 27,
+        minWidth: 16,
+        onPressed: () {
+          index++;
+          setState(() {
+            cont[index]++;
+            print('update cont index ' +
+                index.toString() +
+                " its " +
+                cont[index].toString());
+          });
+        },
+        color: const Color.fromARGB(255, 99, 154, 125),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ));
+  }
+
+  //handling the decrement button
+  Widget decrementButton(int index) {
+    index--;
+    return MaterialButton(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(7.0))),
+        elevation: 5.0,
+        height: 27,
+        minWidth: 16,
+        onPressed: () {
+          index++;
+          setState(() {
+            cont[index]--;
+            print('update cont index ' +
+                index.toString() +
+                " its " +
+                cont[index].toString());
+          });
+        },
+        color: const Color.fromARGB(255, 99, 154, 125),
+        child: const Icon(
+          Icons.horizontal_rule,
+          color: Colors.white,
+        ));
+  }
+
+  //handling the submit button
+  Widget submitButton() {
+    return MaterialButton(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(70.0))),
+        elevation: 5.0,
+        height: 66,
+        minWidth: 55,
+        onPressed: () {
+          findOfficer(cont[0], cont[1], cont[2], cont[3]);
+          print('findOffecer');
+        },
+        color: const Color.fromARGB(255, 99, 154, 125),
+        child: const Icon(
+          Icons.check_sharp,
+          color: Color(0xFFF3D758),
+          size: 44,
+        ));
+  }
+
+  //handling finding available officers and send messages
+  Future<void> findOfficer(int A, int B, int C, int D) async {
+    int requiredA = 0;
+    int requiredB = 0;
+    int requiredC = 0;
+    int requiredD = 0;
+    final QuerySnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection("users").get();
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
+      final location = doc.data()['oLocation'];
+      final status = doc.data()['oStatus'];
+      final token = doc.data()['token'];
+      if ((location == 2 || location == 3) &&
+          status == "Avaliable" &&
+          requiredA != A) {
+        print(
+            'assign officer with the ID: ${doc.id}, and token: $token to area 1');
         //put the calling for the notify message here//
         requiredA++;
         doc.reference.update({'oStatus': "Busy"});
         continue;
       }
-      if((location ==1 || location ==3) && status=="Avaliable" && requiredB!=B){
-        print('assign officer with the ID: ${doc.id}, and token: $token to area 2');
+      if ((location == 1 || location == 3) &&
+          status == "Avaliable" &&
+          requiredB != B) {
+        print(
+            'assign officer with the ID: ${doc.id}, and token: $token to area 2');
         //put the calling for the notify message here//
         requiredB++;
         doc.reference.update({'oStatus': "Busy"});
         continue;
       }
-      if((location ==2 || location ==4) && status=="Avaliable" && requiredC!=C){
-        print('assign officer with the ID: ${doc.id}, and token: $token to area 3');
+      if ((location == 2 || location == 4) &&
+          status == "Avaliable" &&
+          requiredC != C) {
+        print(
+            'assign officer with the ID: ${doc.id}, and token: $token to area 3');
         //put the calling for the notify message here//
         requiredC++;
         doc.reference.update({'oStatus': "Busy"});
         continue;
       }
-      if((location ==2 || location ==3) && status=="Avaliable" && requiredD!=D){
-        print('assign officer with the ID: ${doc.id}, and token: $token to area 4');
+      if ((location == 2 || location == 3) &&
+          status == "Avaliable" &&
+          requiredD != D) {
+        print(
+            'assign officer with the ID: ${doc.id}, and token: $token to area 4');
         //put the calling for the notify message here//
         requiredD++;
         doc.reference.update({'oStatus': "Busy"});
         continue;
       }
     }
-      if (A != requiredA || B != requiredB || C != requiredC || D != requiredD) {
+    if (A != requiredA || B != requiredB || C != requiredC || D != requiredD) {
       Fluttertoast.showToast(
-        msg: "عذرًا. لايتوفر عدد كافي من العناصر لهذا التقسيم، سيتم إشعار العناصر المتاحة فقط.",
+        msg:
+            "عذرًا. لايتوفر عدد كافي من العناصر لهذا التقسيم، سيتم إشعار العناصر المتاحة فقط.",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor:Color(0xFF346957),
+        backgroundColor: Color(0xFF346957),
         textColor: Colors.white,
         fontSize: 15.0,
-    );  
+      );
     } else {
       Fluttertoast.showToast(
-        msg: "تم الإرسال!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor:Color(0xFF346957),
-        textColor: Colors.white,
-        fontSize: 15.0
-    );
+          msg: "تم الإرسال!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Color(0xFF346957),
+          textColor: Colors.white,
+          fontSize: 15.0);
     }
+    await Future.delayed(const Duration(seconds: 5), () {});
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => const SupervisorHomepage()));
   }
 }

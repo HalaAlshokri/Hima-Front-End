@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
-import 'package:hima_front_end/pages/nonotification-Screen.dart';
+import 'package:hima_front_end/pages/officer.dart';
 import 'package:hima_front_end/pages/splash.dart';
 import 'package:hima_front_end/pages/supervisor-home.dart';
 
@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         // Define the default brightness and colors.
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 8, 107, 86),
+          seedColor: const Color.fromARGB(255, 99, 154, 125),
           brightness: Brightness.light,
         ),
         // Define the default `TextTheme`.
@@ -38,15 +38,15 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: startScreen(),
+      home: startScreen(), //method to spicify the show screen
     );
   }
 
   Widget startScreen() {
-    if (getID() == '' || getID() == null) {
+    if (getID() == '') {
       return Splash();
     } else if (getRole() == "officer") {
-      return noNotificationScreen();
+      return OfficerHomepage();
     } else {
       return SupervisorHomepage();
     }

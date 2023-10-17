@@ -16,11 +16,11 @@ class SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    //handling to show the sign in screen
+    //handling time and go to the sign in screen
     _navigatetohome();
   }
 
-  //method to handle if the duration finished show sign in screen
+  //method to handle the duration and if finished go to sign in screen
   _navigatetohome() async {
     await Future.delayed(const Duration(milliseconds: 1400), () {});
     Navigator.pushReplacement(
@@ -32,15 +32,15 @@ class SplashState extends State<Splash> {
   Widget build(context) {
     return Scaffold(
       body: Container(
-        color: const Color.fromARGB(255, 8, 107, 86),
+        color: Color.fromARGB(255, 255, 255, 255),
         alignment: Alignment.center,
         child: Column(
           children: [
-            Container(margin: const EdgeInsets.only(top: 130.0)),
+            Container(margin: const EdgeInsets.only(top: 180.0)),
             Image.asset(
-              'assets/images/Hima_logo.png',
-              height: 180,
-              width: 180,
+              'assets/images/Hima_logo.jpg',
+              height: 100,
+              width: 113,
             ),
           ],
         ),
@@ -48,37 +48,3 @@ class SplashState extends State<Splash> {
     );
   }
 }
-
-////---------------------------main-----------------------
-/*void main() {
-  runApp(App());
-}
-
-//App class override build method to implement splash
-class App extends StatelessWidget {
-  @override
-  Widget build(context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Splash(),
-      ),
-      title: 'sign in screen',
-      theme: ThemeData(
-        useMaterial3: true,
-        // Define the default brightness and colors.
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 8, 107, 86),
-          brightness: Brightness.light,
-        ),
-        // Define the default `TextTheme`.
-        // text styling for headlines, titles, bodies of text, and more.
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(
-            fontSize: 72,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-}*/

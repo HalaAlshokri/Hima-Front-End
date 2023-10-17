@@ -2,22 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
-import 'package:hima_front_end/pages/nonotification-Screen.dart';
+import 'package:hima_front_end/pages/officer.dart';
 import 'package:hima_front_end/pages/supervisor-home.dart';
 
 class SignIn extends StatefulWidget {
   @override
-  _SignInState createState() => _SignInState();
+  SignInState createState() => SignInState();
 }
 
-class _SignInState extends State<SignIn> {
-  bool _isObscure3 = true;
-  bool visible = false;
+class SignInState extends State<SignIn> {
+  bool _isObscure3 = true; //to show the password or not
   final _formkey = GlobalKey<FormState>();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
-
-  String ErrMessage = "";
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  String errMessage =
+      ""; //error message will be shown if there is in submitting the entries
 
   @override
   Widget build(BuildContext context) {
@@ -27,59 +26,51 @@ class _SignInState extends State<SignIn> {
           children: <Widget>[
             Container(
               color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.70,
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.all(12),
+                  margin: const EdgeInsets.fromLTRB(12.0, 50.0, 12.0, 12.0),
                   child: Form(
                     key: _formkey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         //hima logo
                         Image.asset(
-                          'assets/images/Hima_logo.png',
-                          height: 170,
-                          width: 170,
+                          'assets/images/Hima_logo.jpg',
+                          height: 75,
+                          width: 84,
                         ),
-                        SizedBox(
-                          height: 20,
+                        const SizedBox(
+                          height: 40,
                         ),
                         //emailfield
                         emailField(),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         //passwordfield
                         passwordField(),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         //appear when the user not match
                         Text(
-                          ErrMessage,
+                          errMessage,
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.yellow),
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFFF3D758),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 20,
                         ),
                         //button
                         submitButton(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Visibility(
-                            maintainSize: true,
-                            maintainAnimation: true,
-                            maintainState: true,
-                            visible: visible,
-                            child: Container(
-                                child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ))),
                       ],
                     ),
                   ),
@@ -94,7 +85,7 @@ class _SignInState extends State<SignIn> {
 
   void route() {
     User? user = FirebaseAuth.instance.currentUser;
-    var kk = FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)
         .get()
@@ -114,12 +105,12 @@ class _SignInState extends State<SignIn> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const noNotificationScreen(),
+              builder: (context) => const OfficerHomepage(),
             ),
           );
         }
       } else {
-        ErrMessage = "البريد الالكتروني أو كلمة السر غير صحيحة";
+        errMessage = "البريد الالكتروني أو كلمة المرور خاطئة\nحاول مرة أخرى";
         print('Document does not exist on the database');
       }
     });
@@ -128,18 +119,17 @@ class _SignInState extends State<SignIn> {
   void signIn(String email, String password) async {
     if (_formkey.currentState!.validate()) {
       try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
         route();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          ErrMessage = "البريد الالكتروني أو كلمة السر غير صحيحة";
+          errMessage = "البريد الالكتروني أو كلمة المرور خاطئة\nحاول مرة أخرى";
           print('No user found for that email.');
         } else if (e.code == 'wrong-password') {
-          ErrMessage = "البريد الالكتروني أو كلمة السر غير صحيحة";
+          errMessage = "البريد الالكتروني أو كلمة المرور خاطئة\nحاول مرة أخرى";
           print('Wrong password provided for that user.');
         }
       }
@@ -147,95 +137,124 @@ class _SignInState extends State<SignIn> {
   }
 
   Widget emailField() {
-    return TextFormField(
-      controller: emailController,
-      keyboardType: TextInputType.emailAddress,
-      textDirection: TextDirection.rtl,
-      textAlign: TextAlign.right,
-      decoration: InputDecoration(
-        hintTextDirection: TextDirection.rtl,
-        icon: const Icon(Icons.person),
-        labelText: ('اسم المستخدم'),
-        labelStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
+    return Container(
+      margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 1.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 1.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: const Color.fromARGB(255, 99, 154, 125), width: 1.0),
+        borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+        color: Colors.white,
+      ),
+      width: 239.0,
+      height: 37.0,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: TextFormField(
+          controller: emailController,
+          keyboardType: TextInputType.emailAddress,
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+            icon: Icon(Icons.person, color: Color.fromARGB(255, 99, 154, 125)),
+            hintText: (' البريد الالكتروني'),
+            labelStyle: TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          validator: (String? value) {
+            if (value!.isEmpty) {
+              return "يجب تعبئة البريد الالكتروني";
+            }
+            if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                .hasMatch(value)) {
+              return ("الرجاء ادخال بريد الكتروني صالح");
+            } else {
+              return null;
+            }
+          },
+          onSaved: (value) {
+            emailController.text = value!;
+          },
         ),
       ),
-      validator: (value) {
-        if (value!.length == 0) {
-          return "يجب تعبئة البريد الالكتروني";
-        }
-        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
-          return ("الرجاء ادخال بريد الكتروني صالح");
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        emailController.text = value!;
-      },
     );
   }
 
   Widget passwordField() {
-    return TextFormField(
-      controller: passwordController,
-      obscureText: _isObscure3,
-      textDirection: TextDirection.rtl,
-      textAlign: TextAlign.right,
-      decoration: InputDecoration(
-        hintTextDirection: TextDirection.rtl,
-        suffixIcon: IconButton(
-            icon: Icon(_isObscure3 ? Icons.visibility : Icons.visibility_off),
-            onPressed: () {
-              setState(() {
-                _isObscure3 = !_isObscure3;
-              });
-            }),
-        icon: const Icon(Icons.lock),
-        labelText: 'الرقم السري',
-        hintText: 'الرقم السري',
-        labelStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
+    return Container(
+      margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 1.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 1.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: const Color.fromARGB(255, 99, 154, 125), width: 1.0),
+        borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+        color: Colors.white,
+      ),
+      width: 239.0,
+      height: 37.0,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: TextFormField(
+          controller: passwordController,
+          obscureText: _isObscure3,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            suffixIcon: IconButton(
+                icon: Icon(
+                  _isObscure3 ? Icons.visibility : Icons.visibility_off,
+                  color: Color.fromARGB(255, 99, 154, 125),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isObscure3 = !_isObscure3;
+                  });
+                }),
+            icon: const Icon(
+              Icons.lock,
+              color: Color.fromARGB(255, 99, 154, 125),
+            ),
+            hintText: 'كلمة المرور',
+            labelStyle: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          validator: (String? value) {
+            RegExp regex = RegExp(r'^.{5,}$');
+            if (value!.isEmpty) {
+              return "يجب تعبئة كلمة المرور";
+            }
+            if (!regex.hasMatch(value)) {
+              return ("الرجاء ادخال اكثر من 5");
+            } else {
+              return null;
+            }
+          },
+          onSaved: (value) {
+            passwordController.text = value!;
+          },
         ),
       ),
-      validator: (value) {
-        RegExp regex = new RegExp(r'^.{5,}$');
-        if (value!.isEmpty) {
-          return "يجب تعبئة كلمة المرور";
-        }
-        if (!regex.hasMatch(value)) {
-          return ("الرجاء ادخال اكثر من 5");
-        } else {
-          return null;
-        }
-      },
-      onSaved: (value) {
-        passwordController.text = value!;
-      },
     );
   }
 
   Widget submitButton() {
     return MaterialButton(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0))),
       elevation: 5.0,
       height: 40,
       onPressed: () {
-        setState(() {
-          visible = true;
-        });
         signIn(emailController.text, passwordController.text);
       },
-      child: Text(
+      color: const Color.fromARGB(255, 99, 154, 125),
+      child: const Text(
         "    تسجيل الدخول     ",
         style: TextStyle(
-          fontSize: 20,
+          color: Colors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
         ),
       ),
-      color: Color.fromARGB(255, 99, 154, 125),
     );
   }
 }

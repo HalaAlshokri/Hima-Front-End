@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '/pages/access-Screen.dart';
 
 class backScreen extends StatefulWidget {
   const backScreen({super.key});
@@ -12,54 +11,58 @@ class backScreenState extends State<backScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Image.asset('assets/logo.png', height: 60),
-          titleSpacing: 10,
-          backgroundColor: Color.fromARGB(255, 8, 107, 86),
-          elevation: 0,
-          toolbarHeight: 80,
-          leading: null,
-          automaticallyImplyLeading: false,
-
+      appBar: AppBar(
+        toolbarHeight: 60,
+        title: Image.asset(
+          'assets/images/Hima_logo.jpg',
+          height: 45,
+          width: 45,
         ),
-        backgroundColor: Color.fromARGB(255, 8, 107, 86),
-        body: Container(
-          alignment: Alignment.center,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        titleSpacing: 10,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        elevation: 0,
+        leading: null,
+        automaticallyImplyLeading: false,
+      ),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      body: Container(
+        height: 400,
+        padding: const EdgeInsets.all(20),
+        alignment: Alignment.center,
+        child: const Column(
+          children: [
+            SizedBox(height: 30),
+            Icon(Icons.location_pin, size: 100, color: Color(0xFFF3D758)),
+            SizedBox(height: 5),
             Text(
-              'تتبع موقع الجهاز',
+              'الرجاء السماح\n بتعقب موقع الجهاز',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Tajawal',
                 fontWeight: FontWeight.bold,
-                fontSize: 40,
-                color: Color.fromRGBO(255, 255, 255, 1),
+                fontSize: 36,
+                color: Color.fromARGB(255, 99, 154, 125),
               ),
             ),
-            SizedBox(height: 45),
-            ElevatedButton(
-              onPressed : () {
-                Navigator.push(context,MaterialPageRoute(builder: (context)=> const accessScreen()),
-                );
-              },
-              child: Text(
-                "الرجوع",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'Tajawal',
-                  fontWeight: FontWeight.bold,
-                ),
+            SizedBox(height: 10),
+            Text(
+              'السماح بتعقب الموقع يزيد من سهولة\n التوصل لحل سريع ومناسب ',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Tajawal',
+                fontSize: 15,
+                color: Color.fromARGB(255, 99, 154, 125),
               ),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                      const Color.fromARGB(255, 99, 153, 114)),
-                  padding: MaterialStateProperty.all(
-                    EdgeInsets.fromLTRB(80, 10, 80, 10),
-                  ),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)))),
             ),
-            ])
-       )
-      );
+          ],
+        ),
+      ),
+    );
   }
 }
+
+
+/*Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => const noNotificationScreen()),
+  );*/
