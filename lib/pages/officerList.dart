@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hima_front_end/pages/supervisor-home.dart';
 
@@ -15,6 +16,7 @@ class _OfficerListState extends State<OfficerList> {
 
   //retreiving officers info
   Future<void> officersInfo() async {
+    User? user = FirebaseAuth.instance.currentUser;
     final QuerySnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection("users").get();
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
