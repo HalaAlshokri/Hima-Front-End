@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:hima_front_end/pages/map.dart';
 import 'package:hima_front_end/pages/signin_auth.dart';
 
 class OfficerHomepage extends StatefulWidget {
@@ -127,7 +128,8 @@ class OfficerHomepageState extends State<OfficerHomepage> {
             elevation: 5.0,
             height: 40,
             onPressed: () {
-              print('go to mappage');
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => MapScreen()));
             },
             color: const Color.fromARGB(255, 99, 154, 125),
             child: const Text(

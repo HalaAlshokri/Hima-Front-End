@@ -15,7 +15,6 @@ class MapScreen extends StatefulWidget {
 
 class MapScreenState extends State<MapScreen> {
   //get location
-  Position? _currentlocation;
   late bool servicePermission = false;
   late LocationPermission permission;
 
