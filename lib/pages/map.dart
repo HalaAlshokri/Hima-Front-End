@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hima_front_end/pages/Back-Screen.dart';
 import 'package:hima_front_end/pages/officer.dart';
 
 class MapScreen extends StatefulWidget {
@@ -15,14 +14,13 @@ class MapScreen extends StatefulWidget {
 
 class MapScreenState extends State<MapScreen> {
   //get location
+  Position? position;
   late bool servicePermission = false;
   late LocationPermission permission;
 
-  Future<Position> _getCurrentLocation() async {
+  Future<void> _getCurrentLocation() async {
     servicePermission = await Geolocator.isLocationServiceEnabled();
     if (!servicePermission) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => BackScreen()));
       return Future.error('Location services are disabled.');
     }
     permission = await Geolocator.checkPermission();
@@ -34,13 +32,16 @@ class MapScreenState extends State<MapScreen> {
         // Android's shouldShowRequestPermissionRationale
         // returned true. According to Android guidelines
         // your App should show an explanatory UI now.
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BackScreen()));
         return Future.error('Location permissions are denied');
       }
     }
     print("got location");
-    return await Geolocator.getCurrentPosition();
+    setState(() async {
+      position = await Geolocator.getCurrentPosition();
+    });
+    markers.add(Marker(
+        markerId: const MarkerId('currentLocation'),
+        position: LatLng(position!.latitude, position!.longitude)));
   }
 
   //starting map
@@ -61,13 +62,10 @@ class MapScreenState extends State<MapScreen> {
   Set<Marker> markers = {};
 
   @override
-  Future<void> initState() async {
+  void initState() {
     super.initState();
     //handling to show
-    Position position = await _getCurrentLocation();
-    markers.add(Marker(
-        markerId: const MarkerId('currentLocation'),
-        position: LatLng(position.latitude, position.longitude)));
+    _getCurrentLocation();
     markers.add(const Marker(
         markerId: MarkerId('New assigned location'),
         position: LatLng(21.3529654, 39.9697091)));
@@ -120,7 +118,7 @@ class MapScreenState extends State<MapScreen> {
           toNewArea();
         },
         backgroundColor: Colors.white,
-        label: const Text("To NEW Area"),
+        label: const Text("المنطقة الجديدة"),
         icon: const Icon(Icons.fmd_good_rounded,
             color: Color.fromARGB(255, 179, 0, 0)),
       ),
