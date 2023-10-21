@@ -9,7 +9,7 @@ from keras.models import load_model  # TensorFlow is required for Keras to work
 np.set_printoptions(suppress=True)
 
 # Load the models
-TMmodel = load_model(r"C:\Users\Hala's Laptop\Documents\Graduation Project\converted_keras(2)\keras_Model.h5", compile=False)
+TMmodel = load_model("keras_Model.h5", compile=False)
 #YOLOmodel=YOLO('yolov8l') #to be deleted
 YOLOmodel=YOLO('best(YOLOv8L).pt') #Loading our custom model
 
