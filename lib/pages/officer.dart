@@ -14,6 +14,7 @@ class OfficerHomepage extends StatefulWidget {
 class OfficerHomepageState extends State<OfficerHomepage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isNotify = false;
+  int area = 1; //------------to assigned area not this
   //signout:
   signOut() async {
     await SessionManager().destroy();
@@ -128,8 +129,12 @@ class OfficerHomepageState extends State<OfficerHomepage> {
             elevation: 5.0,
             height: 40,
             onPressed: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => MapScreen()));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                            area: area,
+                          ))); //////////////////////fix to assigned area
             },
             color: const Color.fromARGB(255, 99, 154, 125),
             child: const Text(
