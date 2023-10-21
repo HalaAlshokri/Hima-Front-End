@@ -25,7 +25,7 @@ IMAGE_SOURCE4=cv2.VideoCapture(0)
 
 sources_array=[IMAGE_SOURCE1,IMAGE_SOURCE2,IMAGE_SOURCE3,IMAGE_SOURCE4]
 
-# creating a dictionary
+# creating a dictionary (Area : Officers)
 areas = {
     "Zone A": 50, 
     "Zone B": 50,
@@ -44,7 +44,7 @@ def predict(IMAGE_SOURCE):
     return count
 
 #Mathod to predict status: crowded or not
-def crowdAlert(IMAGE_SOURCE):
+def crowd_status(IMAGE_SOURCE):
     success, frame = IMAGE_SOURCE.read()
 
     if success:
@@ -61,40 +61,43 @@ def crowdAlert(IMAGE_SOURCE):
         index = np.argmax(prediction)
         class_name = class_names[index] #Can be omitted
         confidence_score = prediction[0][1] #Only get Crowd class prediction
-        print(confidence_score)
 
         if confidence_score >= 0.9:
             return True
     
     return True
 
+#Method to redistribute officers if an area is crowded
 def redistribute(): 
 
-    areas_crowd_count=[]
-    areas_status=[]
+    areas_crowd_count=[] #Takes count of heads detected per image source
+    areas_status=[] #Takes crowd classification per image source
 
     for i in sources_array:
         count_heads=predict(i) #Heads count INT value
-        status=crowdAlert(i) #Crowded or not BOOLEAN value
+        status=crowd_status(i) #Crowded or not BOOLEAN value
 
         areas_crowd_count.append(count_heads)
         areas_status.append(status)
     
-    areas_crowd_count_perc=[]
+    areas_crowd_count_perc=[] #Takes converted head counts to percentage out of 100
     for i in areas_crowd_count:
-        areas_crowd_count_perc.append(i/sum(areas_crowd_count))
+        areas_crowd_count_perc.append(i/sum(areas_crowd_count)) #Calculate crowd percentage for each area
     
-    officers_sum=sum(areas.values())
+    officers_sum=sum(areas.values()) #Sum of all available officers
 
     if (True) in areas_status:
-        print("One of the areas is crowded!! We have {0} officers, crowd percentages {1}".format(officers_sum, areas_crowd_count_perc))
         for index, area in enumerate(areas):
             areas[area]=round(areas_crowd_count_perc[index]*officers_sum)
         
         print(areas)
+
+    """
+    Testing purposes only!!!!!!!!!!!!!!!!!!!
+    
     else:
         print("No area is crowded. We have {0} officers, crowd percentages {1}".format(officers_sum, areas_crowd_count_perc))
-
+    """
   
 schedule.every(5).minutes.do(redistribute) 
   
