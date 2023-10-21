@@ -100,7 +100,7 @@ def redistribute():
     #print("Detected head objects: ", count) 
     #print("Crowded? ", alert)
   
-schedule.every(0.2).minutes.do(redistribute) 
+schedule.every(5).minutes.do(redistribute) 
   
 
 
