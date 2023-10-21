@@ -73,7 +73,6 @@ def redistribute():
     areas_crowd_count=[]
     areas_status=[]
 
-    """"""
     for i in sources_array:
         count_heads=predict(i) #Heads count INT value
         status=crowdAlert(i) #Crowded or not BOOLEAN value
@@ -96,14 +95,9 @@ def redistribute():
     else:
         print("No area is crowded. We have {0} officers, crowd percentages {1}".format(officers_sum, areas_crowd_count_perc))
 
-
-    #print("Detected head objects: ", count) 
-    #print("Crowded? ", alert)
   
 schedule.every(5).minutes.do(redistribute) 
   
-
-
 
 while True: 
     schedule.run_pending() 
