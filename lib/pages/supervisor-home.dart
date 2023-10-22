@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -186,7 +188,12 @@ class SupervisorState extends State<SupervisorHomepage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Redistribution()));
+                                builder: (context) => const Redistribution(
+                                    zone1: 50,
+                                    zone2: 50,
+                                    zone3: 50,
+                                    zone4: 50,
+                                    isModel: false)));
                       }, //button action for redistribution page---------------------------------------------IMPORTANT
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent),
@@ -352,4 +359,88 @@ class SupervisorState extends State<SupervisorHomepage> {
       },
     );
   }
+  //----------------------------------------model listner--------------------------------------------------
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    // Start the timer to compare documents every 5 minutes
+    Timer.periodic(const Duration(minutes: 5), (timer) {
+      _compareDocuments();
+    });
+  }
+
+  void _compareDocuments() {
+    final firestore = FirebaseFirestore.instance;
+    final collectionReference = firestore.collection('redistribution');
+
+    // Fetch the first document
+    collectionReference.doc('current').get().then((snapshot1) {
+      if (snapshot1.exists) {
+        // Fetch the second document
+        collectionReference.doc('official').get().then((snapshot2) {
+          if (snapshot2.exists) {
+            // Compare the documents
+            final data1 = snapshot1.data();
+            final data2 = snapshot2.data();
+
+            // Perform your comparison logic here
+            if (data1!['Zone-A'] != data2!['Zone-A']) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Redistribution(
+                          zone1: data1['Zone-A'],
+                          zone2: data1['Zone-B'],
+                          zone3: data1['Zone-C'],
+                          zone4: data1['Zone-D'],
+                          isModel: true)));
+            } else if (data1['Zone-B'] != data2['Zone-B']) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Redistribution(
+                          zone1: data1['Zone-A'],
+                          zone2: data1['Zone-B'],
+                          zone3: data1['Zone-C'],
+                          zone4: data1['Zone-D'],
+                          isModel: true)));
+            } else if (data1['Zone-C'] != data2['Zone-C']) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Redistribution(
+                          zone1: data1['Zone-A'],
+                          zone2: data1['Zone-B'],
+                          zone3: data1['Zone-C'],
+                          zone4: data1['Zone-D'],
+                          isModel: true)));
+            } else if (data1['Zone-D'] != data2['Zone-D']) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Redistribution(
+                          zone1: data1['Zone-A'],
+                          zone2: data1['Zone-B'],
+                          zone3: data1['Zone-C'],
+                          zone4: data1['Zone-D'],
+                          isModel: true)));
+            }
+
+            // Print the result
+            print('Comparison Result: $data1 vs $data2');
+          } else {
+            print('Document2 does not exist');
+          }
+        });
+      } else {
+        print('Document1 does not exist');
+      }
+    });
+  }
+  //----------------------------------------model listner--------------------------------------------------
 }
