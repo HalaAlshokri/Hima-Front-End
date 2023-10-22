@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hima_front_end/pages/Messages.dart';
 import 'package:hima_front_end/pages/supervisor-home.dart';
 
 main() {
@@ -33,6 +34,7 @@ class RedistributionState extends State<Redistribution> {
   int initialValue = 50;
   //initial value of officer in each area
   List<int> cont = [50, 50, 50, 50];
+  Messages msgObject = Messages();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -309,43 +311,43 @@ class RedistributionState extends State<Redistribution> {
       final status = doc.data()['oStatus'];
       final token = doc.data()['token'];
       if ((location == 2 || location == 3) &&
-          status == "Avaliable" &&
+          status == "avaliable" &&
           requiredA != A) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 1');
-        //put the calling for the notify message here//
+        msgObject.sendNotification("تعيين جديد", "تعيين جديد في منطقة 1", token);
         requiredA++;
-        doc.reference.update({'oStatus': "Busy"});
+        doc.reference.update({'oStatus': "busy"});
         continue;
       }
       if ((location == 1 || location == 3) &&
-          status == "Avaliable" &&
+          status == "avaliable" &&
           requiredB != B) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 2');
-        //put the calling for the notify message here//
+         msgObject.sendNotification("تعيين جديد", "تعيين جديد في منطقة 2", token);
         requiredB++;
-        doc.reference.update({'oStatus': "Busy"});
+        doc.reference.update({'oStatus': "busy"});
         continue;
       }
       if ((location == 2 || location == 4) &&
-          status == "Avaliable" &&
+          status == "avaliable" &&
           requiredC != C) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 3');
-        //put the calling for the notify message here//
+         msgObject.sendNotification("تعيين جديد", "تعيين جديد في منطقة 3", token);
         requiredC++;
-        doc.reference.update({'oStatus': "Busy"});
+        doc.reference.update({'oStatus': "busy"});
         continue;
       }
       if ((location == 2 || location == 3) &&
-          status == "Avaliable" &&
+          status == "avaliable" &&
           requiredD != D) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 4');
-        //put the calling for the notify message here//
+         msgObject.sendNotification("تعيين جديد", "تعيين جديد في منطقة 4", token);
         requiredD++;
-        doc.reference.update({'oStatus': "Busy"});
+        doc.reference.update({'oStatus': "busy"});
         continue;
       }
     }
@@ -356,8 +358,8 @@ class RedistributionState extends State<Redistribution> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: Color(0xFF346957),
-        textColor: Colors.white,
+        backgroundColor: Color.fromARGB(0,0,0,0),
+        textColor: Color.fromARGB(255, 99, 154, 125),
         fontSize: 15.0,
       );
     } else {
@@ -366,8 +368,8 @@ class RedistributionState extends State<Redistribution> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: Color(0xFF346957),
-          textColor: Colors.white,
+          backgroundColor: Color.fromARGB(0,0,0,0),
+          textColor: Color.fromARGB(255, 99, 154, 125),
           fontSize: 15.0);
     }
     await Future.delayed(const Duration(seconds: 5), () {});

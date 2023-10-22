@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:hima_front_end/pages/Messages.dart';
 import 'package:hima_front_end/pages/officerList.dart';
 //import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hima_front_end/pages/signin_auth.dart';
@@ -64,7 +65,15 @@ class SupervisorState extends State<SupervisorHomepage> {
       existOfficers[i] = OfficerNum[i];
     }
   }
-
+  
+  @override
+  void initState() {
+    Messages msgObj = Messages();
+    msgObj.requestPermission();
+    msgObj.getToken();
+    msgObj.SupinitInfo();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

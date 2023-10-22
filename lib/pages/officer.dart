@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hima_front_end/pages/Messages.dart';
 import 'package:hima_front_end/pages/signin_auth.dart';
 
 class OfficerHomepage extends StatefulWidget {
@@ -13,6 +18,10 @@ class OfficerHomepage extends StatefulWidget {
 class OfficerHomepageState extends State<OfficerHomepage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isNotify = false;
+  String msg = "";
+  Messages msgObject = Messages();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   //signout:
   signOut() async {
     await SessionManager().destroy();
@@ -20,20 +29,23 @@ class OfficerHomepageState extends State<OfficerHomepage> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => SignIn()));
   }
-
-  Future<void> getMessage() async {
+//to be deleted no need for it
+ /* Future<void> getMessage() async {
     //message method
     await Future.delayed(const Duration(seconds: 5), () {});
     setState(() {
       isNotify = true;
     });
-  }
+  }*/
 
   @override
   void initState() {
     super.initState();
+    msgObject.requestPermission();
+    msgObject.getToken();
+    OffinitInfo();
     //handling to show the sign in screen
-    getMessage();
+    //getMessage();
   }
 
   @override
@@ -81,15 +93,72 @@ class OfficerHomepageState extends State<OfficerHomepage> {
   }
 
   Widget noNotification() {
+    Widget ReportButton = TextButton(
+      child: Text("نعم"),
+      onPressed: () {
+        getOfficerLocation();
+        Navigator.of(context, rootNavigator: true).pop();
+        Fluttertoast.showToast(
+            msg: "تم الإرسال!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Color.fromARGB(0, 0, 0, 0),
+            textColor: Color.fromARGB(255, 99, 154, 125),
+            fontSize: 15.0);
+        print("sent");
+      },
+    );
+    Widget CanceltButton = TextButton(
+      child: Text("إلغاء"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+        print("cancelled");
+      },
+    );
     return Center(
       child: Column(
         children: [
           const SizedBox(height: 120),
           Image.asset('assets/images/noassigned.png'),
+          Padding(padding: EdgeInsets.only(top: 280.0)),
+          TextButton(
+            child: const Text(
+              "إبلاغ عن المنطقة ",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                fontSize: 14,
+                color: const Color.fromARGB(255, 99, 154, 125),
+              ),
+            ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                        title: Text(
+                          "إبلاغ منطقة مزدحمة",
+                          textAlign: TextAlign.center,
+                        ),
+                        content: Text(
+                          "أنت الآن تقوم بالإبلاغ عن هذه المنطقة. هل أنت متأكد بإنك تريد الإستمرار ؟",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        actions: [CanceltButton, ReportButton],
+                        actionsAlignment: MainAxisAlignment.center);
+                  });
+            },
+          ),
         ],
       ),
     );
   }
+
 
   Widget notification() {
     return Container(
@@ -142,5 +211,56 @@ class OfficerHomepageState extends State<OfficerHomepage> {
         ],
       ),
     );
+  }
+
+   void getOfficerLocation() {
+    //retrive the current officer location
+    String user = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    var userRef = db.collection("users");
+    userRef.doc(user).get().then((doc) {
+      int currentLocation = doc.data()?['oLocation'];
+      ReportArea(currentLocation);
+    });
+  }
+
+  Future<void> ReportArea(int location) async {
+    //access the notification method
+    //get the appropriate supervisor
+    final QuerySnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance.collection("users").get();
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
+      final supervisedAreas = doc.data()['supervisedAreas'];
+      final token = doc.data()['token'];
+      if (supervisedAreas != null && supervisedAreas.contains(location)) {
+        msgObject.sendNotification(
+            "إبلاغ منطقة مزدحمة",
+            "المنطقة $location مزدحمة لآن. الرجاء إخطار الضباط المتاحين.",
+            token);
+      }
+    }
+  }
+  
+   OffinitInfo() async {
+    AndroidNotificationDetails androidNotificationDetails =
+        const AndroidNotificationDetails("channelId", "channelName",
+            importance: Importance.max,
+            priority: Priority.max,
+            icon: "@mipmap/noty_icon");
+    NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
+    // Firebase Message Recieving Code
+    FirebaseMessaging.onMessage.listen((event) async {
+      print("${event.notification!.body}");
+      setState(() {
+        isNotify = true;
+        msg = ("${event.notification!.body}");
+      });
+      await flutterLocalNotificationsPlugin.show(
+          0,
+          "${event.notification!.title}",
+          "${event.notification!.body}",
+          notificationDetails);
+    });
   }
 }
