@@ -159,8 +159,8 @@ class OfficerHomepageState extends State<OfficerHomepage> {
     );
   }
 
-
-  Widget notification() {
+   Widget notification() {
+    Future.delayed(const Duration(seconds: 5), () {});
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -169,24 +169,14 @@ class OfficerHomepageState extends State<OfficerHomepage> {
           const SizedBox(height: 60),
           Image.asset('assets/images/ringing.png'),
           const SizedBox(height: 20),
-          const Text(
-            'تعيين جديد\nفي منطقة',
+          Text(
+            msg,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Tajawal',
               fontWeight: FontWeight.bold,
               fontSize: 36,
               color: Color.fromARGB(255, 99, 154, 125),
-            ),
-          ),
-          const Text(
-            '1', ////////////////will change depend on the message
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Tajawal',
-              fontWeight: FontWeight.bold,
-              fontSize: 36,
-              color: Color(0xFFF3D758),
             ),
           ),
           const SizedBox(height: 20),
