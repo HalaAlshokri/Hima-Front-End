@@ -1,3 +1,4 @@
+import timeit
 import schedule 
 import os
 import time 
@@ -21,9 +22,9 @@ db = firestore.Client()
 np.set_printoptions(suppress=True)
 
 # Load the models
-TMmodel = load_model(r"U:\GithubRepos\Hima-Front-End\lib\model\keras_model.h5", compile=False)
+TMmodel = load_model(r"C:\GithubRepos\Hima-Front-End\lib\model\keras_model.h5", compile=False)
 #YOLOmodel=YOLO('yolov8l') #to be deleted
-YOLOmodel=YOLO(r"U:\GithubRepos\Hima-Front-End\lib\model\YOLOv8L(368).pt") #Loading our custom model
+YOLOmodel=YOLO(r"C:\GithubRepos\Hima-Front-End\lib\model\YOLOv8L(368).pt") #Loading our custom model
 
 # Load the labels
 class_names = ["Normal", "Crowd"]
@@ -81,6 +82,7 @@ def crowd_status(IMAGE_SOURCE):
 
 #Method to redistribute officers if an area is crowded
 def redistribute(): 
+    start_time = time.time()
 
     areas_crowd_count=[] #Takes count of heads detected per image source
     areas_status=[] #Takes crowd classification per image source
@@ -109,15 +111,17 @@ def redistribute():
             firestore_current.set(areas)
         
         print(areas) # ,areas_status
-
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print("Elapsed time: ", elapsed_time) 
     
     #Testing purposes only!!!!!!!!!!!!!!!!!!!
-    
+    """
     else:
         print("No area is crowded. We have {0} officers, crowd percentages {1}".format(officers_sum, areas_crowd_count_perc))
-    """"""
+    """
   
-schedule.every(0.1).minutes.do(redistribute) # Minutes could be adjusted as wanted or needed
+schedule.every(0).minutes.do(redistribute) # Minutes could be adjusted as wanted or needed
   
 
 while True: 
