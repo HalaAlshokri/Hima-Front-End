@@ -19,6 +19,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isNotify = false;
   String msg = "";
+  String desiredOfficerNum = "";
   Messages msgObject = Messages();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -93,29 +94,6 @@ class OfficerHomepageState extends State<OfficerHomepage> {
   }
 
   Widget noNotification() {
-    Widget ReportButton = TextButton(
-      child: Text("نعم"),
-      onPressed: () {
-           ReportArea();
-        Navigator.of(context, rootNavigator: true).pop();
-        Fluttertoast.showToast(
-            msg: "تم الإرسال!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Color.fromARGB(0, 0, 0, 0),
-            textColor: Color.fromARGB(255, 99, 154, 125),
-            fontSize: 15.0);
-        print("sent");
-      },
-    );
-    Widget CanceltButton = TextButton(
-      child: Text("إلغاء"),
-      onPressed: () {
-        Navigator.of(context, rootNavigator: true).pop();
-        print("cancelled");
-      },
-    );
     return Center(
       child: Column(
         children: [
@@ -133,25 +111,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
               ),
             ),
             onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                        title: Text(
-                          "إبلاغ منطقة مزدحمة",
-                          textAlign: TextAlign.center,
-                        ),
-                        content: Text(
-                          "أنت الآن تقوم بالإبلاغ عن هذه المنطقة. هل أنت متأكد بإنك تريد الإستمرار ؟",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        actions: [CanceltButton, ReportButton],
-                        actionsAlignment: MainAxisAlignment.center);
-                  });
+             support();
             },
           ),
         ],
@@ -214,7 +174,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
   return currentLocation;
 }
 
- Future<void> ReportArea() async {
+ Future<void> ReportArea(int num) async {
     int location = await getOfficerLocation();
     //get the appropriate supervisor
     final QuerySnapshot<Map<String, dynamic>> snapshot =
@@ -225,7 +185,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
       if (supervisedAreas != null && supervisedAreas.contains(location)) {
         msgObject.sendNotification(
             "إبلاغ منطقة مزدحمة",
-            "المنطقة $location مزدحمة لآن. الرجاء إخطار الضباط المتاحين.",
+            "المنطقة $location مزدحمة الآن. الرجاء إبلاغ $num من العناصر المتاحة.",
             token);
       }
     }
@@ -252,5 +212,39 @@ class OfficerHomepageState extends State<OfficerHomepage> {
           "${event.notification!.body}",
           notificationDetails);
     });
+  }
+    Future<void> support() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ادخل عدد الضباط المراد',
+           textAlign: TextAlign.center, 
+           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+           ),
+          content: TextField(
+            onChanged: (value) {
+              desiredOfficerNum = value;
+            },
+            decoration: InputDecoration(hintText: '٣٠', 
+            ),
+          ),
+          actions: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child:
+            TextButton(
+              child: Text('إرسال',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              onPressed: () async {
+                 Navigator.of(context).pop();
+                  ReportArea(int.parse(desiredOfficerNum));
+              },
+            ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
