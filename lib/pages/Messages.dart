@@ -32,12 +32,19 @@ class Messages {
   }
 
   getToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    FirebaseFirestore.instance
+  String? newToken = await FirebaseMessaging.instance.getToken();
+  String? currentToken = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .get()
+      .then((doc) => doc.get('token'));
+  if (newToken != currentToken) {
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .set({'token': token}, SetOptions(merge: true));
+        .set({'token': newToken}, SetOptions(merge: true));
   }
+}
 
   SupinitInfo() async {
     AndroidNotificationDetails androidNotificationDetails =
