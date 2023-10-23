@@ -4,6 +4,7 @@ import 'package:custom_marker/marker_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hima_front_end/pages/officer.dart';
 
 class MapScreen extends StatefulWidget {
   final int area;
@@ -23,7 +24,8 @@ class MapScreenState extends State<MapScreen> {
       const LatLng(21.3527671, 39.9639548),
       const LatLng(21.3504605, 39.9678601),
       const LatLng(21.3503943, 39.9677769),
-      const LatLng(21.3526654, 39.6939182)
+      const LatLng(21.3526654, 39.6939182),
+      const LatLng(21.3527671, 39.9639548)
     ];
     var polygonSet = Set<Polygon>();
     polygonSet.add(
@@ -43,7 +45,8 @@ class MapScreenState extends State<MapScreen> {
       const LatLng(21.3552368, 39.9656999),
       const LatLng(21.3529654, 39.9697091),
       const LatLng(21.3528696, 39.9696565),
-      const LatLng(21.3551522, 39.9656030)
+      const LatLng(21.3551522, 39.9656030),
+      const LatLng(21.3552368, 39.9656999)
     ];
     var polygonSet = Set<Polygon>();
     polygonSet.add(
@@ -63,7 +66,8 @@ class MapScreenState extends State<MapScreen> {
       const LatLng(21.3555936, 39.9822563),
       const LatLng(21.3541446, 39.9853361),
       const LatLng(21.3530196, 39.9844729),
-      const LatLng(21.3541681, 39.9815856)
+      const LatLng(21.3541681, 39.9815856),
+      const LatLng(21.3555936, 39.9822563)
     ];
     var polygonSet = Set<Polygon>();
     polygonSet.add(
@@ -83,7 +87,8 @@ class MapScreenState extends State<MapScreen> {
       const LatLng(21.3564306, 39.9838213),
       const LatLng(21.3549801, 39.9856491),
       const LatLng(21.3541446, 39.9853361),
-      const LatLng(21.3555936, 39.9822563)
+      const LatLng(21.3555936, 39.9822563),
+      const LatLng(21.3564306, 39.9838213)
     ];
     var polygonSet = Set<Polygon>();
     polygonSet.add(
@@ -112,6 +117,7 @@ class MapScreenState extends State<MapScreen> {
   Position? position;
   late bool servicePermission = false;
   late LocationPermission permission;
+  StreamSubscription<Position>? positionStream;
 
   static const LocationSettings locationSettings = LocationSettings(
     accuracy: LocationAccuracy.medium,
@@ -140,11 +146,11 @@ class MapScreenState extends State<MapScreen> {
       position = await Geolocator.getCurrentPosition();
     });
 
-    final StreamSubscription<Position> positionStream =
+    positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position? position) {
       setState(() async {
-        _currentPosition = LatLng(position!.latitude, position!.longitude);
+        _currentPosition = LatLng(position!.latitude, position.longitude);
         markers.add(Marker(
             markerId: const MarkerId('currentLocation'),
             position:
@@ -154,18 +160,24 @@ class MapScreenState extends State<MapScreen> {
               Colors.blueAccent,
               15.0,
             )));
-      });
-      setState(() {
         initialCameraPosition = CameraPosition(
-          target: LatLng(position!.latitude, position!.longitude),
+          target: LatLng(position.latitude, position.longitude),
           zoom: 14.0,
         );
       });
       print('position is ' +
           (position!.latitude.toString()) +
           ' and ' +
-          (position!.longitude.toString()));
+          (position.longitude.toString()));
     });
+  }
+
+  @override
+  void dispose() {
+    if (positionStream != null) {
+      positionStream!.cancel();
+    }
+    super.dispose();
   }
 
   //starting map
@@ -222,8 +234,9 @@ class MapScreenState extends State<MapScreen> {
     targetPositionArea(widget.area);
   }
 
-  goOfficer() async {
-    Navigator.of(context).pop();
+  goOfficer() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => OfficerHomepage()));
   }
 
   @override
@@ -243,8 +256,8 @@ class MapScreenState extends State<MapScreen> {
           ),
           FloatingActionButton(
             mini: true,
-            onPressed: () async {
-              await goOfficer();
+            onPressed: () {
+              goOfficer();
             },
             backgroundColor: const Color.fromARGB(255, 99, 154, 125),
             child: const Icon(Icons.arrow_right, size: 20, color: Colors.white),
