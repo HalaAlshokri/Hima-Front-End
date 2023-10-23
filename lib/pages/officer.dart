@@ -96,7 +96,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
     Widget ReportButton = TextButton(
       child: Text("نعم"),
       onPressed: () {
-        getOfficerLocation();
+           ReportArea();
         Navigator.of(context, rootNavigator: true).pop();
         Fluttertoast.showToast(
             msg: "تم الإرسال!",
@@ -203,19 +203,19 @@ class OfficerHomepageState extends State<OfficerHomepage> {
     );
   }
 
-   void getOfficerLocation() {
-    //retrive the current officer location
-    String user = FirebaseAuth.instance.currentUser!.uid;
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    var userRef = db.collection("users");
-    userRef.doc(user).get().then((doc) {
-      int currentLocation = doc.data()?['oLocation'];
-      ReportArea(currentLocation);
-    });
-  }
+  Future<int> getOfficerLocation() async {
+  int currentLocation;
+  // Retrieve the current officer location
+  String user = FirebaseAuth.instance.currentUser!.uid;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  var userRef = db.collection("users");
+  final doc = await userRef.doc(user).get();
+  currentLocation = doc.data()?['oLocation'];
+  return currentLocation;
+}
 
-  Future<void> ReportArea(int location) async {
-    //access the notification method
+ Future<void> ReportArea() async {
+    int location = await getOfficerLocation();
     //get the appropriate supervisor
     final QuerySnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection("users").get();
