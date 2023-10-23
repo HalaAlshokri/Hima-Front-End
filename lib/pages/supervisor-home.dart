@@ -5,8 +5,10 @@ import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:hima_front_end/pages/officerList.dart';
 //import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hima_front_end/pages/signin_auth.dart';
-
 import 'redistribution.dart';
+
+FirebaseFirestore firestore = FirebaseFirestore.instance;
+
 //Firebase
 /*import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -35,6 +37,30 @@ class SupervisorState extends State<SupervisorHomepage> {
   List<int> totalOfficers = [50, 50, 50, 50];
   List<int> existOfficers = [0, 0, 0, 0];
   final FirebaseAuth auth = FirebaseAuth.instance;
+
+  //DocumentSnapshot variable = await FirebaseFirestore.instance.collection('redistribution').doc('current').get();
+
+  /*Future<void> getOfficersDistribution() async {
+    FirebaseFirestore.instance
+        .collection('redistribution')
+        .doc('current')
+        .get()
+        .then((value) {
+      totalOfficers.addAll([
+        value.get('Zone-A'),
+        value.get('Zone-B'),
+        value.get('Zone-C'),
+        value.get('Zone-D')
+      ]);
+      return [
+        value.get('Zone-A'),
+        value.get('Zone-B'),
+        value.get('Zone-C'),
+        value.get('Zone-D')
+      ];
+    });
+  }*/
+
   //signout:
   signOut() async {
     await SessionManager().destroy();

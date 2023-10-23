@@ -1,17 +1,29 @@
 import schedule 
+import os
 import time 
 import numpy as np
 import cv2
 from ultralytics import YOLO
 from keras.models import load_model  # TensorFlow is required for Keras to work
+import math
+
+
+from firebase_admin import firestore
+#credentials.Certificate
+cred = "lib\model\hima-front-end-firebase-adminsdk-ilbe6-21df361235.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = cred
+#firebase_admin.initialize_app(cred)
+
+
+db = firestore.Client()
 
 # Disable scientific notation for clarity // keras
 np.set_printoptions(suppress=True)
 
 # Load the models
-TMmodel = load_model("keras_Model.h5", compile=False)
+TMmodel = load_model(r"U:\GithubRepos\Hima-Front-End\lib\model\keras_model.h5", compile=False)
 #YOLOmodel=YOLO('yolov8l') #to be deleted
-YOLOmodel=YOLO('best(YOLOv8L).pt') #Loading our custom model
+YOLOmodel=YOLO(r"U:\GithubRepos\Hima-Front-End\lib\model\YOLOv8L(368).pt") #Loading our custom model
 
 # Load the labels
 class_names = ["Normal", "Crowd"]
@@ -27,10 +39,10 @@ sources_array=[IMAGE_SOURCE1,IMAGE_SOURCE2,IMAGE_SOURCE3,IMAGE_SOURCE4]
 
 # creating a dictionary (Area : Officers)
 areas = {
-    "Zone A": 50, 
-    "Zone B": 50,
-    "Zone C": 50,
-    "Zone D": 50
+    "Zone-A": 50, 
+    "Zone-B": 50,
+    "Zone-C": 50,
+    "Zone-D": 50
 }
 
 #Method to predict number of heads in a single frame
@@ -65,7 +77,7 @@ def crowd_status(IMAGE_SOURCE):
         if confidence_score >= 0.9:
             return True
     
-    return True
+    return  True
 
 #Method to redistribute officers if an area is crowded
 def redistribute(): 
@@ -79,27 +91,33 @@ def redistribute():
 
         areas_crowd_count.append(count_heads)
         areas_status.append(status)
+
+    my_formatter = "{0:.2f}"
     
     areas_crowd_count_perc=[] #Takes converted head counts to percentage out of 100
     for i in areas_crowd_count:
         areas_crowd_count_perc.append(i/sum(areas_crowd_count)) #Calculate crowd percentage for each area
     
-    officers_sum=sum(areas.values()) #Sum of all available officers
+    officers_sum=200  #200 Sum of all available officers
 
     if (True) in areas_status:
         for index, area in enumerate(areas):
             areas[area]=round(areas_crowd_count_perc[index]*officers_sum)
-        
-        print(areas)
 
-    """
-    Testing purposes only!!!!!!!!!!!!!!!!!!!
+            firestore_current = db.collection("redistribution").document("current")
+            # Set the capital field
+            firestore_current.set(areas)
+        
+        print(areas) # ,areas_status
+
+    
+    #Testing purposes only!!!!!!!!!!!!!!!!!!!
     
     else:
         print("No area is crowded. We have {0} officers, crowd percentages {1}".format(officers_sum, areas_crowd_count_perc))
-    """
+    """"""
   
-schedule.every(5).minutes.do(redistribute) 
+schedule.every(0.1).minutes.do(redistribute) # Minutes could be adjusted as wanted or needed
   
 
 while True: 
