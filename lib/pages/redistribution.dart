@@ -86,12 +86,12 @@ class RedistributionState extends State<Redistribution> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 60, //appbar height
+        toolbarHeight: 70, //appbar height
         //padding method necessary to push logo to right
         title: Image.asset(
           'assets/images/Hima_logo.jpg',
-          height: 45,
-          width: 45,
+          height: 70, // was 45
+          width: 70, // was 45
         ),
         backgroundColor: const Color.fromARGB(
             255, 255, 255, 255), //appbar color is transparent
@@ -99,19 +99,21 @@ class RedistributionState extends State<Redistribution> {
       ),
       //container for hole body
       body: Container(
-        height: 600,
-        padding: const EdgeInsets.only(top: 10),
+        height: 800,
+        //padding: const EdgeInsets.only(top: 10),
         color: Colors.white,
         alignment: Alignment.center,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             head(),
             //container for rows of info
             Container(
+              alignment: Alignment.center,
               margin: const EdgeInsets.only(
-                  left: 10, top: 30, right: 10, bottom: 10),
-              padding: const EdgeInsets.only(
-                  left: 20, top: 20, right: 20, bottom: 0),
+                  left: 10, top: 30, right: 0, bottom: 10),
+              padding:
+                  const EdgeInsets.only(left: 15, top: 20, right: 0, bottom: 0),
               width: 315.0,
               height: 276.0,
               //color: Color.fromARGB(255, 202, 223, 212),
@@ -124,9 +126,12 @@ class RedistributionState extends State<Redistribution> {
               ),
               //column represents inside contaainer
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //first row for illustration of content
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       //for officers number word
                       Container(
@@ -142,6 +147,7 @@ class RedistributionState extends State<Redistribution> {
                         width: 168,
                         child: fixedTextStyle("عدد الضباط"),
                       ),
+                      SizedBox(width: 21),
                       //the right container which show area word
                       Container(
                         alignment: Alignment.center,
@@ -153,7 +159,7 @@ class RedistributionState extends State<Redistribution> {
                           color: containerColor,
                         ),
                         height: 27,
-                        width: 80,
+                        width: 78,
                         child: fixedTextStyle("المنطقة"),
                       ),
                     ],
@@ -163,6 +169,7 @@ class RedistributionState extends State<Redistribution> {
                 ],
               ),
             ),
+            SizedBox(height: 20),
             //submuting button widget
             submitButton(),
           ],
@@ -176,11 +183,12 @@ class RedistributionState extends State<Redistribution> {
     if (widget.isModel) {
       return Column(children: [
         Image.asset(
-          'images/ringing.png',
-          height: 84,
-          width: 84,
+          'assets/images/ringing.png',
+          height: 150, // was 84
+          width: 150, // was 84
+          fit: BoxFit.contain,
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         const Text(
           "توجد حالة ازدحام",
           style: TextStyle(
@@ -230,7 +238,7 @@ class RedistributionState extends State<Redistribution> {
       width: 309,
       //list view builder
       child: ListView.builder(
-        padding: const EdgeInsets.all(5),
+        //padding: const EdgeInsets.all(5),
         itemCount: 4, //number of items
         itemBuilder: (BuildContext context, int index) {
           //container holds row information
@@ -330,7 +338,7 @@ class RedistributionState extends State<Redistribution> {
             borderRadius: BorderRadius.all(Radius.circular(7.0))),
         elevation: 5.0,
         height: 27,
-        minWidth: 16,
+        minWidth: 16, // was 16
         onPressed: () {
           index++;
           setState(() {
@@ -351,11 +359,13 @@ class RedistributionState extends State<Redistribution> {
   //handling the submit button
   Widget submitButton() {
     return MaterialButton(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(70.0))),
+        shape: CircleBorder(
+            //borderRadius: BorderRadius.all(Radius.circular(100))
+            side: BorderSide.none,
+            eccentricity: 0.0),
         elevation: 5.0,
         height: 66,
-        minWidth: 55,
+        minWidth: 66,
         onPressed: () {
           findOfficer(cont[0], cont[1], cont[2], cont[3]);
           print('findOffecer');
@@ -363,7 +373,7 @@ class RedistributionState extends State<Redistribution> {
         color: const Color.fromARGB(255, 99, 154, 125),
         child: const Icon(
           Icons.check_sharp,
-          color: Color(0xFFF3D758),
+          color: Colors.white,
           size: 44,
         ));
   }
@@ -426,7 +436,7 @@ class RedistributionState extends State<Redistribution> {
         msg:
             "عذرًا. لايتوفر عدد كافي من العناصر لهذا التقسيم، سيتم إشعار العناصر المتاحة فقط.",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
         backgroundColor: Color(0xFF346957),
         textColor: Colors.white,

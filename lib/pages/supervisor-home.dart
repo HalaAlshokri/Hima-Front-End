@@ -74,25 +74,33 @@ class SupervisorState extends State<SupervisorHomepage> {
       //extendBodyBehindAppBar: true, //Extend scaffold body to eliminate appbar
       //Appbar only contains Hima logo
       appBar: AppBar(
-        toolbarHeight: 60, //appbar height
+        toolbarHeight: 80, //appbar height was 60
         //padding method necessary to push logo to right
         title: Row(children: [
-          Image.asset(
-            'assets/images/Hima_logo.jpg',
-            height: 45,
-            width: 45,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/images/Hima_logo.jpg',
+              height: 70, // was 45
+              width: 70, // was 45
+              fit: BoxFit.contain,
+            ),
           ),
           const SizedBox(
-            width: 190,
+            width: 225,
           ),
-          FloatingActionButton(
-            mini: true,
-            onPressed: () async {
-              await signOut();
-            },
-            backgroundColor: const Color.fromARGB(255, 99, 154, 125),
-            child: const Icon(Icons.logout_outlined,
-                size: 20, color: Colors.white),
+          SizedBox(
+            width: 55,
+            height: 55,
+            child: FloatingActionButton(
+              mini: true,
+              onPressed: () async {
+                await signOut();
+              },
+              backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+              child: const Icon(Icons.logout_outlined,
+                  size: 25, color: Colors.white), //Size was 20
+            ),
           ),
         ]),
         backgroundColor: const Color.fromARGB(
@@ -101,7 +109,7 @@ class SupervisorState extends State<SupervisorHomepage> {
       ),
       //wrapped scaffold body with container to control alignment
       body: Container(
-        height: 600,
+        height: 900, //was 600
         padding: const EdgeInsets.only(top: 10),
         color: Colors.white,
         alignment: Alignment.center,
@@ -109,8 +117,9 @@ class SupervisorState extends State<SupervisorHomepage> {
           children: [
             Image.asset(
               'assets/images/ring.png',
-              height: 84,
-              width: 84,
+              height: 200, //was 84
+              width: 200, //was 84
+              fit: BoxFit.contain,
             ),
 
             //Container for areas feed buttons
@@ -125,7 +134,7 @@ class SupervisorState extends State<SupervisorHomepage> {
                     const Text(
                       "لا يوجد زحام",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 99, 154, 125),
                       ),
@@ -135,17 +144,11 @@ class SupervisorState extends State<SupervisorHomepage> {
                             15), //to space out components in green container (rectangle)
                     //row container for area word
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        //just to make space
-                        Container(
-                          color: Colors.white,
-                          height: 27,
-                          width: 168,
-                        ),
-                        //the right container which show area word
                         Container(
                             alignment: Alignment.center,
-                            margin: const EdgeInsets.fromLTRB(3, 3, 8, 3),
+                            margin: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color:
@@ -155,13 +158,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                                   const BorderRadius.all(Radius.circular(6.0)),
                               color: const Color.fromARGB(255, 99, 154, 125),
                             ),
-                            height: 32,
-                            width: 80,
+                            height: 36, // was 32
+                            width: 90, // was 80
                             child: const Text(
                               "المنطقة",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 20, // was 17
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             )),
@@ -173,9 +176,10 @@ class SupervisorState extends State<SupervisorHomepage> {
                 ),
               ),
             ),
+            SizedBox(height: 40),
             //Container for last row in body column (for new distribution button)
             Container(
-              margin: const EdgeInsets.only(top: 9),
+              margin: const EdgeInsets.only(right: 40),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -195,17 +199,24 @@ class SupervisorState extends State<SupervisorHomepage> {
                                     zone4: 50,
                                     isModel: false)));
                       }, //button action for redistribution page---------------------------------------------IMPORTANT
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent),
+                      style: TextButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.zero,
+                      ),
                       child: Text('اضغط هنا',
-                          style: TextStyle(shadows: [
-                            Shadow(
-                              blurRadius: 5.0,
-                              // color of the shadow
-                              color: Colors.black.withOpacity(0.5),
-                              offset: const Offset(0, 2),
-                            ),
-                          ], color: Colors.grey, fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                            shadows: [
+                              Shadow(
+                                blurRadius: 5.0,
+                                // color of the shadow
+                                color: Colors.black.withOpacity(0.5),
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                            color: Color(0xff808080),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          )),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -222,20 +233,25 @@ class SupervisorState extends State<SupervisorHomepage> {
                       ],
                       fontWeight: FontWeight.bold,
                       color: const Color.fromARGB(255, 99, 154, 125),
+                      fontSize: 15,
                     ),
                   ),
                   const SizedBox(width: 20),
-                  FloatingActionButton(
-                    mini: true,
-                    onPressed: () async {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OfficerList()));
-                    },
-                    backgroundColor: const Color.fromARGB(255, 99, 154, 125),
-                    child: const Icon(Icons.people_rounded,
-                        size: 20, color: Colors.white),
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: FloatingActionButton(
+                      mini: true,
+                      onPressed: () async {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OfficerList()));
+                      },
+                      backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+                      child: const Icon(Icons.people_rounded,
+                          size: 25, color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -259,8 +275,8 @@ class SupervisorState extends State<SupervisorHomepage> {
         } else {
           return SizedBox(
             //size of the outer box list
-            height: 200,
-            width: 250,
+            height: 200, //was 200
+            width: 320, //was 250
             //list view builder
             child: ListView.builder(
               padding: const EdgeInsets.all(5),
@@ -274,10 +290,11 @@ class SupervisorState extends State<SupervisorHomepage> {
                   color: Colors.white,
                   //Row has different container boxes of information
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       //first left container has the total number of officers in one area
                       Container(
-                          margin: const EdgeInsets.fromLTRB(15, 3, 3, 3),
+                          margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: const Color.fromARGB(255, 99, 154, 125),
@@ -286,13 +303,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                                 const BorderRadius.all(Radius.circular(6.0)),
                             color: const Color.fromARGB(255, 99, 154, 125),
                           ),
-                          height: 27,
-                          width: 30,
+                          height: 36, // was 27
+                          width: 45, // was 30
                           child: Text(
                             "${totalOfficers[index]}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           )),
@@ -303,13 +320,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                             "ضابط من",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 20, //was 15
                                 color: Color.fromARGB(255, 99, 154, 125),
                                 fontWeight: FontWeight.bold),
                           )),
                       // middle container to show the number of officer are in the area in the moment
                       Container(
-                          margin: const EdgeInsets.fromLTRB(3, 3, 3, 3),
+                          margin: const EdgeInsets.all(10), //was 3
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: const Color.fromARGB(255, 99, 154, 125),
@@ -318,13 +335,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                                 const BorderRadius.all(Radius.circular(6.0)),
                             color: const Color.fromARGB(255, 99, 154, 125),
                           ),
-                          height: 27,
-                          width: 30,
+                          height: 36, // was 27
+                          width: 45, // was 30
                           child: Text(
                             "${existOfficers[index]}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           )),
@@ -339,13 +356,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                                 const BorderRadius.all(Radius.circular(6.0)),
                             color: const Color.fromARGB(255, 99, 154, 125),
                           ),
-                          height: 27,
+                          height: 30, // was 27
                           width: 80,
                           child: Text(
                             "${area[index]}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           )),
@@ -369,7 +386,7 @@ class SupervisorState extends State<SupervisorHomepage> {
 
   void _startTimer() {
     // Start the timer to compare documents every 5 minutes
-    Timer.periodic(const Duration(minutes: 5), (timer) {
+    Timer.periodic(const Duration(minutes: 1), (timer) {
       _compareDocuments();
     });
   }
