@@ -226,7 +226,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
             onChanged: (value) {
               desiredOfficerNum = value;
             },
-            decoration: InputDecoration(hintText: '٣٠', 
+            decoration: InputDecoration(hintText: '30', 
             ),
           ),
           actions: <Widget>[
