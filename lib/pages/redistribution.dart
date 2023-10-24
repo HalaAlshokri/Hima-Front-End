@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,7 +10,9 @@ main() {
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Directionality(
-          textDirection: TextDirection.rtl, child: Redistribution())));
+          textDirection: TextDirection.rtl,
+          child: Redistribution(
+              zone1: 50, zone2: 50, zone3: 50, zone4: 50, isModel: false))));
 }
 
 //Source: https://stackoverflow.com/questions/53394135/convert-english-number-with-farsi-or-arabic-number-in-dart
@@ -23,7 +27,18 @@ String replaceFarsiNumber(String input) {
 }
 
 class Redistribution extends StatefulWidget {
-  const Redistribution({super.key});
+  final int zone1;
+  final int zone2;
+  final int zone3;
+  final int zone4;
+  final bool isModel;
+  const Redistribution(
+      {super.key,
+      required this.zone1,
+      required this.zone2,
+      required this.zone3,
+      required this.zone4,
+      required this.isModel});
 
   @override
   State<Redistribution> createState() => RedistributionState();
@@ -33,18 +48,53 @@ class RedistributionState extends State<Redistribution> {
   //const RedistributionState({super.key});
   int initialValue = 50;
   //initial value of officer in each area
-  List<int> cont = [50, 50, 50, 50];
+
+  List<int> cont = []; // = [50, 50, 50, 50];
+  Color containerColor = const Color.fromARGB(255, 99, 154, 125);
+  List<Color> areaContainerColor = [
+    const Color.fromARGB(255, 99, 154, 125),
+    const Color.fromARGB(255, 99, 154, 125),
+    const Color.fromARGB(255, 99, 154, 125),
+    const Color.fromARGB(255, 99, 154, 125)
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    //handling to show the sign in screen
+    cont.add(widget.zone1);
+    cont.add(widget.zone2);
+    cont.add(widget.zone3);
+    cont.add(widget.zone4);
+    if (widget.isModel) {
+      setState(() {
+        containerColor = const Color(0xFFF3D758);
+      });
+      int maxvalue = max(cont[0], cont[1]);
+      maxvalue = max(maxvalue, cont[2]);
+      maxvalue = max(maxvalue, cont[3]);
+      print(maxvalue.toString());
+      for (int i = 0; i < cont.length; i++) {
+        if (cont[i] == maxvalue) {
+          setState(() {
+            areaContainerColor[i] = const Color(0xFFF3D758);
+          });
+        }
+      }
+    }
+  }
   Messages msgObject = Messages();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 60, //appbar height
+        toolbarHeight: 70, //appbar height
         //padding method necessary to push logo to right
         title: Image.asset(
           'assets/images/Hima_logo.jpg',
-          height: 45,
-          width: 45,
+          height: 70, // was 45
+          width: 70, // was 45
         ),
         backgroundColor: const Color.fromARGB(
             255, 255, 255, 255), //appbar color is transparent
@@ -52,32 +102,21 @@ class RedistributionState extends State<Redistribution> {
       ),
       //container for hole body
       body: Container(
-        height: 600,
-        padding: const EdgeInsets.only(top: 10),
+        height: 800,
+        //padding: const EdgeInsets.only(top: 10),
         color: Colors.white,
         alignment: Alignment.center,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/ring.png',
-              height: 84,
-              width: 84,
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              "توزيع جديد",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 99, 154, 125),
-              ),
-            ),
+            head(),
             //container for rows of info
             Container(
+              alignment: Alignment.center,
               margin: const EdgeInsets.only(
-                  left: 10, top: 30, right: 10, bottom: 10),
-              padding: const EdgeInsets.only(
-                  left: 20, top: 20, right: 20, bottom: 0),
+                  left: 10, top: 30, right: 0, bottom: 10),
+              padding:
+                  const EdgeInsets.only(left: 15, top: 20, right: 0, bottom: 0),
               width: 315.0,
               height: 276.0,
               //color: Color.fromARGB(255, 202, 223, 212),
@@ -90,40 +129,40 @@ class RedistributionState extends State<Redistribution> {
               ),
               //column represents inside contaainer
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //first row for illustration of content
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       //for officers number word
                       Container(
                         alignment: Alignment.center,
                         margin: const EdgeInsets.fromLTRB(3, 3, 8, 3),
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 99, 154, 125),
-                              width: 1.0),
+                          border: Border.all(color: containerColor, width: 1.0),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(6.0)),
-                          color: const Color.fromARGB(255, 99, 154, 125),
+                          color: containerColor,
                         ),
                         height: 27,
                         width: 168,
                         child: fixedTextStyle("عدد الضباط"),
                       ),
+                      SizedBox(width: 21),
                       //the right container which show area word
                       Container(
                         alignment: Alignment.center,
                         margin: const EdgeInsets.fromLTRB(3, 3, 8, 3),
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 99, 154, 125),
-                              width: 1.0),
+                          border: Border.all(color: containerColor, width: 1.0),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(6.0)),
-                          color: const Color.fromARGB(255, 99, 154, 125),
+                          color: containerColor,
                         ),
                         height: 27,
-                        width: 80,
+                        width: 78,
                         child: fixedTextStyle("المنطقة"),
                       ),
                     ],
@@ -133,12 +172,55 @@ class RedistributionState extends State<Redistribution> {
                 ],
               ),
             ),
+            SizedBox(height: 20),
             //submuting button widget
             submitButton(),
           ],
         ),
       ),
     );
+  }
+
+  //head style depend on if model or new distribution
+  Widget head() {
+    if (widget.isModel) {
+      return Column(children: [
+        Image.asset(
+          'assets/images/ringing.png',
+          height: 150, // was 84
+          width: 150, // was 84
+          fit: BoxFit.contain,
+        ),
+        const SizedBox(height: 20),
+        const Text(
+          "توجد حالة ازدحام",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFF3D758),
+          ),
+        ),
+      ]);
+    } else {
+      return Container(
+          margin:
+              const EdgeInsets.only(left: 10, top: 80, right: 10, bottom: 0),
+          //padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 0),
+          width: 310.0,
+          height: 30.0,
+          //color: Color.fromARGB(255, 202, 223, 212),
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: const Color.fromARGB(255, 99, 154, 125), width: 1.0),
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            color: const Color.fromARGB(255, 99, 154, 125),
+          ),
+
+          //column represents inside green contaainer
+          child: Center(
+            child: fixedTextStyle("تقسيم جديد للضباط"),
+          ));
+    }
   }
 
   //to hangle repeated text style
@@ -159,7 +241,7 @@ class RedistributionState extends State<Redistribution> {
       width: 309,
       //list view builder
       child: ListView.builder(
-        padding: const EdgeInsets.all(5),
+        //padding: const EdgeInsets.all(5),
         itemCount: 4, //number of items
         itemBuilder: (BuildContext context, int index) {
           //container holds row information
@@ -202,11 +284,10 @@ class RedistributionState extends State<Redistribution> {
                     margin: const EdgeInsets.fromLTRB(17, 3, 8, 3),
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: const Color.fromARGB(255, 99, 154, 125),
-                          width: 1.0),
+                          color: areaContainerColor[index], width: 1.0),
                       borderRadius:
                           const BorderRadius.all(Radius.circular(6.0)),
-                      color: const Color.fromARGB(255, 99, 154, 125),
+                      color: areaContainerColor[index],
                     ),
                     height: 27,
                     width: 77,
@@ -245,7 +326,7 @@ class RedistributionState extends State<Redistribution> {
                 cont[index].toString());
           });
         },
-        color: const Color.fromARGB(255, 99, 154, 125),
+        color: areaContainerColor[index + 1],
         child: const Icon(
           Icons.add,
           color: Colors.white,
@@ -260,7 +341,7 @@ class RedistributionState extends State<Redistribution> {
             borderRadius: BorderRadius.all(Radius.circular(7.0))),
         elevation: 5.0,
         height: 27,
-        minWidth: 16,
+        minWidth: 16, // was 16
         onPressed: () {
           index++;
           setState(() {
@@ -271,7 +352,7 @@ class RedistributionState extends State<Redistribution> {
                 cont[index].toString());
           });
         },
-        color: const Color.fromARGB(255, 99, 154, 125),
+        color: areaContainerColor[index + 1],
         child: const Icon(
           Icons.horizontal_rule,
           color: Colors.white,
@@ -281,11 +362,13 @@ class RedistributionState extends State<Redistribution> {
   //handling the submit button
   Widget submitButton() {
     return MaterialButton(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(70.0))),
+        shape: CircleBorder(
+            //borderRadius: BorderRadius.all(Radius.circular(100))
+            side: BorderSide.none,
+            eccentricity: 0.0),
         elevation: 5.0,
         height: 66,
-        minWidth: 55,
+        minWidth: 66,
         onPressed: () {
           findOfficer(cont[0], cont[1], cont[2], cont[3]);
           print('findOffecer');
@@ -293,7 +376,7 @@ class RedistributionState extends State<Redistribution> {
         color: const Color.fromARGB(255, 99, 154, 125),
         child: const Icon(
           Icons.check_sharp,
-          color: Color(0xFFF3D758),
+          color: Colors.white,
           size: 44,
         ));
   }
@@ -356,7 +439,7 @@ class RedistributionState extends State<Redistribution> {
         msg:
             "عذرًا. لايتوفر عدد كافي من العناصر لهذا التقسيم، سيتم إشعار العناصر المتاحة فقط.",
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
         backgroundColor: Color.fromARGB(0,0,0,0),
         textColor: Color.fromARGB(255, 99, 154, 125),
