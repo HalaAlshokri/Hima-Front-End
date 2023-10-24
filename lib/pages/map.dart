@@ -23,7 +23,7 @@ class MapScreenState extends State<MapScreen> {
       const LatLng(21.3527671, 39.9639548),
       const LatLng(21.3504605, 39.9678601),
       const LatLng(21.3503943, 39.9677769),
-      const LatLng(21.3526654, 39.6939182),
+      const LatLng(21.352672, 39.963899), //updated because of error in typing
       const LatLng(21.3527671, 39.9639548)
     ];
     var polygonSet = Set<Polygon>();
@@ -137,21 +137,30 @@ class MapScreenState extends State<MapScreen> {
     print("got location");
     setState(() async {
       position = await Geolocator.getCurrentPosition();
-      markers.add(Marker(
-          markerId: const MarkerId('currentLocation'),
-          position: LatLng(position!.latitude, position!.longitude),
-          icon: await MarkerIcon.markerFromIcon(
-            Icons.circle_outlined,
-            Colors.blueAccent,
-            15.0,
-          )));
+      if (position != null) {
+        markers.add(
+          Marker(
+            markerId: const MarkerId('currentLocation'),
+            position: LatLng(position!.latitude, position!.longitude),
+            icon: await MarkerIcon.markerFromIcon(
+              Icons.circle_outlined,
+              Colors.blueAccent,
+              10.0,
+            ),
+          ),
+        );
+        initialCameraPosition = CameraPosition(
+          target: LatLng(position!.latitude, position!.longitude),
+          zoom: 14.0,
+        );
+      }
     });
   }
 
   //starting map
   final Completer<GoogleMapController> _controller = Completer();
 
-  static CameraPosition initialCameraPosition = const CameraPosition(
+  CameraPosition initialCameraPosition = const CameraPosition(
     target: LatLng(21.3552368, 39.9656999),
     zoom: 14.0,
   );
