@@ -67,7 +67,7 @@ class SupervisorState extends State<SupervisorHomepage> {
       existOfficers[i] = OfficerNum[i];
     }
   }
-  
+
   @override
   void initState() {
     Messages msgObj = Messages();
@@ -75,7 +75,9 @@ class SupervisorState extends State<SupervisorHomepage> {
     msgObj.getToken();
     msgObj.SupinitInfo();
     super.initState();
+    _startTimer();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -387,11 +389,11 @@ class SupervisorState extends State<SupervisorHomepage> {
   }
   //----------------------------------------model listner--------------------------------------------------
 
-  @override
+  /*@override
   void initState() {
     super.initState();
     _startTimer();
-  }
+  }*/
 
   void _startTimer() {
     // Start the timer to compare documents every 5 minutes
