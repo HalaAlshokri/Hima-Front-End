@@ -37,32 +37,28 @@ class _OfficerListState extends State<OfficerList> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        toolbarHeight: 70, //appbar height
+        toolbarHeight: 60, //appbar height
         //padding method necessary to push logo to right
         title: Row(children: [
           Image.asset(
             'assets/images/Hima_logo.jpg',
-            height: 70, // was 45
-            width: 70, // was 45
+            height: 45,
+            width: 45,
           ),
           const SizedBox(
-            width: 250,
+            width: 190,
           ),
-          SizedBox(
-            width: 55,
-            height: 55,
-            child: FloatingActionButton(
-              mini: true,
-              onPressed: () async {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SupervisorHomepage()));
-              },
-              backgroundColor: const Color.fromARGB(255, 99, 154, 125),
-              child: const Icon(Icons.keyboard_arrow_right,
-                  size: 40, color: Colors.white),
-            ),
+          FloatingActionButton(
+            mini: true,
+            onPressed: () async {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SupervisorHomepage()));
+            },
+            backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+            child: const Icon(Icons.keyboard_arrow_right,
+                size: 20, color: Colors.white),
           ),
         ]),
         backgroundColor: const Color.fromARGB(
