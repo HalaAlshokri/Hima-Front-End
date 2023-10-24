@@ -15,7 +15,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
-  LatLng? _currentPosition = null;
   Set<Marker> markers = {};
 
   //road in nimra mosque
@@ -117,12 +116,6 @@ class MapScreenState extends State<MapScreen> {
   Position? position;
   late bool servicePermission = false;
   late LocationPermission permission;
-  StreamSubscription<Position>? positionStream;
-
-  static const LocationSettings locationSettings = LocationSettings(
-    accuracy: LocationAccuracy.medium,
-    distanceFilter: 100,
-  );
 
   Future<void> _getCurrentLocation() async {
     servicePermission = await Geolocator.isLocationServiceEnabled();
@@ -144,40 +137,15 @@ class MapScreenState extends State<MapScreen> {
     print("got location");
     setState(() async {
       position = await Geolocator.getCurrentPosition();
+      markers.add(Marker(
+          markerId: const MarkerId('currentLocation'),
+          position: LatLng(position!.latitude, position!.longitude),
+          icon: await MarkerIcon.markerFromIcon(
+            Icons.circle_outlined,
+            Colors.blueAccent,
+            15.0,
+          )));
     });
-
-    positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
-      setState(() async {
-        _currentPosition = LatLng(position!.latitude, position.longitude);
-        markers.add(Marker(
-            markerId: const MarkerId('currentLocation'),
-            position:
-                LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-            icon: await MarkerIcon.markerFromIcon(
-              Icons.circle_outlined,
-              Colors.blueAccent,
-              15.0,
-            )));
-        initialCameraPosition = CameraPosition(
-          target: LatLng(position.latitude, position.longitude),
-          zoom: 14.0,
-        );
-      });
-      print('position is ' +
-          (position!.latitude.toString()) +
-          ' and ' +
-          (position.longitude.toString()));
-    });
-  }
-
-  @override
-  void dispose() {
-    if (positionStream != null) {
-      positionStream!.cancel();
-    }
-    super.dispose();
   }
 
   //starting map
@@ -267,27 +235,15 @@ class MapScreenState extends State<MapScreen> {
             255, 255, 255, 255), //appbar color is transparent
         elevation: 0.0, //remove appbar shadow
       ),
-      body: _currentPosition == null
-          ? const Center(
-              child: Text(
-                'Loading...',
-                style: TextStyle(
-                  fontFamily: 'Tajawal',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Color.fromARGB(255, 99, 154, 125),
-                ),
-              ),
-            )
-          : GoogleMap(
-              initialCameraPosition: initialCameraPosition,
-              markers: markers,
-              polygons: assignedArea(widget.area),
-              mapType: MapType.normal,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
+      body: GoogleMap(
+        initialCameraPosition: initialCameraPosition,
+        markers: markers,
+        polygons: assignedArea(widget.area),
+        mapType: MapType.normal,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           toNewArea();
