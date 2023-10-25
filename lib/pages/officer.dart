@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:hima_front_end/pages/map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hima_front_end/pages/Messages.dart';
 import 'package:hima_front_end/pages/signin_auth.dart';
@@ -18,11 +19,14 @@ class OfficerHomepage extends StatefulWidget {
 class OfficerHomepageState extends State<OfficerHomepage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isNotify = false;
+
+  int area = 1; //------------to assigned area not this //map conflict?
   String msg = "";
   String desiredOfficerNum = "";
   Messages msgObject = Messages();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
   //signout:
   signOut() async {
     await SessionManager().destroy();
@@ -40,7 +44,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
   }*/
 
   @override
-  void initState() {
+  /**/void initState() {
     super.initState();
     msgObject.requestPermission();
     msgObject.getToken();
@@ -146,7 +150,12 @@ class OfficerHomepageState extends State<OfficerHomepage> {
             elevation: 5.0,
             height: 40,
             onPressed: () {
-              print('go to mappage');
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                            area: area,
+                          ))); //////////////////////fix to assigned area
             },
             color: const Color.fromARGB(255, 99, 154, 125),
             child: const Text(

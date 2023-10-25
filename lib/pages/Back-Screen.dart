@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class backScreen extends StatefulWidget {
-  const backScreen({super.key});
+class BackScreen extends StatefulWidget {
+  const BackScreen({super.key});
 
   @override
-  State<backScreen> createState() => backScreenState();
+  State<BackScreen> createState() => BackScreenState();
 }
 
-class backScreenState extends State<backScreen> {
+class BackScreenState extends State<BackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

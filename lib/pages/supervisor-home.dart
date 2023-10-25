@@ -48,6 +48,7 @@ class SupervisorState extends State<SupervisorHomepage> {
 
   Future<void> numOfficerInArea() async {
     List<int> OfficerNum = [0, 0, 0, 0];
+    User? user = FirebaseAuth.instance.currentUser;
     final QuerySnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection("users").get();
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {

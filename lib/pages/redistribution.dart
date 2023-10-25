@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hima_front_end/pages/Messages.dart';
@@ -387,6 +388,7 @@ class RedistributionState extends State<Redistribution> {
     int requiredB = 0;
     int requiredC = 0;
     int requiredD = 0;
+    User? user = FirebaseAuth.instance.currentUser;
     final QuerySnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection("users").get();
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
