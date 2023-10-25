@@ -220,24 +220,33 @@ class MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 60, //appbar height
+        toolbarHeight: 75, //appbar height
         //padding method necessary to push logo to right
         title: Row(children: [
-          Image.asset(
-            'assets/images/Hima_logo.jpg',
-            height: 45,
-            width: 45,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/images/Hima_logo.jpg',
+              height: 70,
+              width: 70,
+              fit: BoxFit.contain,
+            ),
           ),
           const SizedBox(
-            width: 190,
+            width: 225,
           ),
-          FloatingActionButton(
-            mini: true,
-            onPressed: () {
-              goOfficer();
-            },
-            backgroundColor: const Color.fromARGB(255, 99, 154, 125),
-            child: const Icon(Icons.arrow_right, size: 20, color: Colors.white),
+          SizedBox(
+            width: 55,
+            height: 55,
+            child: FloatingActionButton(
+              mini: true,
+              onPressed: () {
+                goOfficer();
+              },
+              backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+              child:
+                  const Icon(Icons.arrow_right, size: 40, color: Colors.white),
+            ),
           ),
         ]),
         backgroundColor: const Color.fromARGB(

@@ -23,12 +23,14 @@ class SignInState extends State<SignIn> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
               color: Colors.white,
               child: Center(
                 child: Container(
-                  margin: const EdgeInsets.fromLTRB(12.0, 50.0, 12.0, 12.0),
+                  margin: const EdgeInsets.fromLTRB(12.0, 140.0, 12.0, 12.0),
                   child: Form(
                     key: _formkey,
                     child: Column(
@@ -41,8 +43,9 @@ class SignInState extends State<SignIn> {
                         //hima logo
                         Image.asset(
                           'assets/images/Hima_logo.jpg',
-                          height: 75,
-                          width: 84,
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.contain,
                         ),
                         const SizedBox(
                           height: 40,
@@ -50,12 +53,14 @@ class SignInState extends State<SignIn> {
                         //emailfield
                         emailField(),
                         const SizedBox(
-                          height: 20,
+                          height: 30,
+                          width: 220,
                         ),
                         //passwordfield
                         passwordField(),
                         const SizedBox(
                           height: 20,
+                          width: 220,
                         ),
                         //appear when the user not match
                         Text(
@@ -138,7 +143,7 @@ class SignInState extends State<SignIn> {
 
   Widget emailField() {
     return Container(
-      margin: const EdgeInsets.fromLTRB(4.0, 1.0, 4.0, 1.0),
+      margin: const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 1.0),
       padding: const EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 1.0),
       decoration: BoxDecoration(
         border: Border.all(
@@ -146,14 +151,18 @@ class SignInState extends State<SignIn> {
         borderRadius: const BorderRadius.all(Radius.circular(12.0)),
         color: Colors.white,
       ),
-      width: 239.0,
-      height: 37.0,
+      width: 290.0,
+      height: 50.0,
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: TextFormField(
+          textInputAction: TextInputAction.next,
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
+            contentPadding:
+                EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+            //filled: true,
             border: InputBorder.none,
             icon: Icon(Icons.person, color: Color.fromARGB(255, 99, 154, 125)),
             hintText: (' البريد الالكتروني'),
@@ -190,8 +199,8 @@ class SignInState extends State<SignIn> {
         borderRadius: const BorderRadius.all(Radius.circular(12.0)),
         color: Colors.white,
       ),
-      width: 239.0,
-      height: 37.0,
+      width: 290.0,
+      height: 50.0,
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: TextFormField(
@@ -251,7 +260,7 @@ class SignInState extends State<SignIn> {
         "    تسجيل الدخول     ",
         style: TextStyle(
           color: Colors.white,
-          fontSize: 15,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
       ),
