@@ -105,7 +105,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
-//------------------------------------Map
   custom_marker:
     dependency: "direct main"
     description:
@@ -114,7 +113,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-//==============================================
   dbus:
     dependency: transitive
     description:
@@ -123,7 +121,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.8"
-//---------------------------------ODImplement
   fake_async:
     dependency: transitive
     description:
@@ -468,10 +465,10 @@ packages:
     dependency: transitive
     description:
       name: google_maps_flutter_web
-      sha256: f893d1542c6562bc8299ef768fbbe92ade83c220ab3209b9477ec9f81ad585e4
+      sha256: "05067c5aa762ebee44b7ef4902a311ed8cf891ef655e2798bae063aa3050c8d9"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.4+2"
+    version: "0.5.4+1"
   html:
     dependency: transitive
     description:
@@ -756,8 +753,7 @@ packages:
       sha256: dd904f795d4b4f3b870833847c461801f6750a9fa8e61ea5ac53f9422b31f250
       url: "https://pub.dev"
     source: hosted
-//----------------------------------------------Map
-    version: "1.10.0"
+    version: "1.9.1"
   sqflite:
     dependency: transitive
     description:
@@ -774,9 +770,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.0"
-//==========================================================
-   //version: "1.9.1"
-//-----------------------------------------------ODImplement
   stack_trace:
     dependency: transitive
     description:
@@ -890,10 +883,5 @@ packages:
     source: hosted
     version: "6.3.0"
 sdks:
-//<<<<<<< Map
-  dart: ">=3.1.0 <4.0.0"
-  flutter: ">=3.13.0"
-//=======
-  //dart: ">=3.0.5 <4.0.0"
-  //flutter: ">=3.7.0"
-//>>>>>>> ODImplement
+  dart: ">=3.0.5 <4.0.0"
+  flutter: ">=3.10.0"
