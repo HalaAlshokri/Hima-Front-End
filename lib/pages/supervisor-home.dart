@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hima_front_end/pages/Messages.dart';
 import 'package:hima_front_end/pages/officerList.dart';
 //import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -189,88 +190,66 @@ class SupervisorState extends State<SupervisorHomepage> {
               ),
             ),
             SizedBox(height: 40),
-            //Container for last row in body column (for new distribution button)
-            Container(
-              margin: const EdgeInsets.only(right: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 40),
-                  SizedBox(
-                    height: 25,
-                    width: 85,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Redistribution(
-                                    zone1: 50,
-                                    zone2: 50,
-                                    zone3: 50,
-                                    zone4: 50,
-                                    isModel: false)));
-                      }, //button action for redistribution page---------------------------------------------IMPORTANT
-                      style: TextButton.styleFrom(
-                        minimumSize: Size.zero,
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: Text('اضغط هنا',
-                          style: TextStyle(
-                            shadows: [
-                              Shadow(
-                                blurRadius: 5.0,
-                                // color of the shadow
-                                color: Colors.black.withOpacity(0.5),
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                            color: Color(0xff808080),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          )),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    "تقسيم جديد؟",
-                    style: TextStyle(
-                      shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          // color of the shadow
-                          color: Colors.black.withOpacity(0.5),
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                      fontWeight: FontWeight.bold,
-                      color: const Color.fromARGB(255, 99, 154, 125),
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: FloatingActionButton(
-                      mini: true,
-                      onPressed: () async {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OfficerList()));
-                      },
-                      backgroundColor: const Color.fromARGB(255, 99, 154, 125),
-                      child: const Icon(Icons.people_rounded,
-                          size: 25, color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 50),
           ],
         ),
+      ),
+      bottomNavigationBar: Directionality(
+        textDirection: TextDirection.rtl,
+        child: GNav(
+            selectedIndex: 0,
+            onTabChange: (index) {
+              if (index == 1) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Redistribution(
+                            zone1: 50,
+                            zone2: 50,
+                            zone3: 50,
+                            zone4: 50,
+                            isModel: false)));
+              } else if (index == 2) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => OfficerList()));
+              }
+            },
+            curve: Curves.easeInOut, // tab animation curves
+            gap: 8, // the tab button gap between icon and text
+            color: const Color.fromARGB(
+                123, 255, 255, 255), // unselected icon color
+            backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+            activeColor: Colors.white, // selected icon and text color
+            iconSize: 27, // tab button icon size
+            tabBackgroundColor: const Color.fromARGB(
+                57, 255, 255, 255), // selected tab background color
+            tabMargin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8), // navigation bar padding
+            tabs: const <GButton>[
+              GButton(
+                icon: Icons.home,
+                text: 'الرئيسية',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              GButton(
+                icon: Icons.group_add_rounded,
+                text: 'تقسيم جديد',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              GButton(
+                icon: Icons.groups_2_rounded,
+                text: 'قائمة الضباط',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
       ),
     );
   }

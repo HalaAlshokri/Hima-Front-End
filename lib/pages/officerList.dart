@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:hima_front_end/pages/redistribution.dart';
 import 'package:hima_front_end/pages/supervisor-home.dart';
 
 class OfficerList extends StatefulWidget {
@@ -41,32 +43,11 @@ class _OfficerListState extends State<OfficerList> {
       appBar: AppBar(
         toolbarHeight: 70, //appbar height
         //padding method necessary to push logo to right
-        title: Row(children: [
-          Image.asset(
-            'assets/images/Hima_logo.jpg',
-            height: 70, // was 45
-            width: 70, // was 45
-          ),
-          const SizedBox(
-            width: 250,
-          ),
-          SizedBox(
-            width: 55,
-            height: 55,
-            child: FloatingActionButton(
-              mini: true,
-              onPressed: () async {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SupervisorHomepage()));
-              },
-              backgroundColor: const Color.fromARGB(255, 99, 154, 125),
-              child: const Icon(Icons.keyboard_arrow_right,
-                  size: 40, color: Colors.white),
-            ),
-          ),
-        ]),
+        title: Image.asset(
+          'assets/images/Hima_logo.jpg',
+          height: 70, // was 45
+          width: 70, // was 45
+        ),
         backgroundColor: const Color.fromARGB(
             255, 255, 255, 255), //appbar color is transparent
         elevation: 0.0, //remove appbar shadow
@@ -137,6 +118,66 @@ class _OfficerListState extends State<OfficerList> {
             ),
           ]),
         ),
+      ),
+      bottomNavigationBar: Directionality(
+        textDirection: TextDirection.rtl,
+        child: GNav(
+            selectedIndex: 2,
+            onTabChange: (index) {
+              if (index == 0) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SupervisorHomepage()));
+              } else if (index == 1) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Redistribution(
+                            zone1: 50,
+                            zone2: 50,
+                            zone3: 50,
+                            zone4: 50,
+                            isModel: false)));
+              }
+            },
+            curve: Curves.easeInOut, // tab animation curves
+            gap: 8, // the tab button gap between icon and text
+            color: const Color.fromARGB(
+                123, 255, 255, 255), // unselected icon color
+            backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+            activeColor: Colors.white, // selected icon and text color
+            iconSize: 27, // tab button icon size
+            tabBackgroundColor: const Color.fromARGB(
+                57, 255, 255, 255), // selected tab background color
+            tabMargin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8), // navigation bar padding
+            tabs: const <GButton>[
+              GButton(
+                icon: Icons.home,
+                text: 'الرئيسية',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              GButton(
+                icon: Icons.group_add_rounded,
+                text: 'تقسيم جديد',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              GButton(
+                icon: Icons.groups_2_rounded,
+                text: 'قائمة الضباط',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
       ),
     );
   }

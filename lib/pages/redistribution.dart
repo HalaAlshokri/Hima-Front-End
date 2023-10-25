@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hima_front_end/pages/Messages.dart';
+import 'package:hima_front_end/pages/officerList.dart';
 import 'package:hima_front_end/pages/supervisor-home.dart';
 
 main() {
@@ -84,6 +86,7 @@ class RedistributionState extends State<Redistribution> {
       }
     }
   }
+
   Messages msgObject = Messages();
 
   @override
@@ -178,6 +181,59 @@ class RedistributionState extends State<Redistribution> {
             submitButton(),
           ],
         ),
+      ),
+      bottomNavigationBar: Directionality(
+        textDirection: TextDirection.rtl,
+        child: GNav(
+            selectedIndex: 1,
+            onTabChange: (index) {
+              if (index == 0) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SupervisorHomepage()));
+              } else if (index == 2) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => OfficerList()));
+              }
+            },
+            curve: Curves.easeInOut, // tab animation curves
+            gap: 8, // the tab button gap between icon and text
+            color: const Color.fromARGB(
+                123, 255, 255, 255), // unselected icon color
+            backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+            activeColor: Colors.white, // selected icon and text color
+            iconSize: 27, // tab button icon size
+            tabBackgroundColor: const Color.fromARGB(
+                57, 255, 255, 255), // selected tab background color
+            tabMargin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8), // navigation bar padding
+            tabs: const <GButton>[
+              GButton(
+                icon: Icons.home,
+                text: 'الرئيسية',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              GButton(
+                icon: Icons.group_add_rounded,
+                text: 'تقسيم جديد',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              GButton(
+                icon: Icons.groups_2_rounded,
+                text: 'قائمة الضباط',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
       ),
     );
   }
@@ -400,7 +456,8 @@ class RedistributionState extends State<Redistribution> {
           requiredA != A) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 1');
-        msgObject.sendNotification("تعيين جديد", "تعيين جديد في منطقة 1", token);
+        msgObject.sendNotification(
+            "تعيين جديد", "تعيين جديد في منطقة 1", token);
         requiredA++;
         doc.reference.update({'oStatus': "busy"});
         continue;
@@ -410,7 +467,8 @@ class RedistributionState extends State<Redistribution> {
           requiredB != B) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 2');
-         msgObject.sendNotification("تعيين جديد", "تعيين جديد في منطقة 2", token);
+        msgObject.sendNotification(
+            "تعيين جديد", "تعيين جديد في منطقة 2", token);
         requiredB++;
         doc.reference.update({'oStatus': "busy"});
         continue;
@@ -420,7 +478,8 @@ class RedistributionState extends State<Redistribution> {
           requiredC != C) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 3');
-         msgObject.sendNotification("تعيين جديد", "تعيين جديد في منطقة 3", token);
+        msgObject.sendNotification(
+            "تعيين جديد", "تعيين جديد في منطقة 3", token);
         requiredC++;
         doc.reference.update({'oStatus': "busy"});
         continue;
@@ -430,7 +489,8 @@ class RedistributionState extends State<Redistribution> {
           requiredD != D) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 4');
-         msgObject.sendNotification("تعيين جديد", "تعيين جديد في منطقة 4", token);
+        msgObject.sendNotification(
+            "تعيين جديد", "تعيين جديد في منطقة 4", token);
         requiredD++;
         doc.reference.update({'oStatus': "busy"});
         continue;
@@ -443,7 +503,7 @@ class RedistributionState extends State<Redistribution> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
-        backgroundColor: Color.fromARGB(0,0,0,0),
+        backgroundColor: Color.fromARGB(0, 0, 0, 0),
         textColor: Color.fromARGB(255, 99, 154, 125),
         fontSize: 15.0,
       );
@@ -453,7 +513,7 @@ class RedistributionState extends State<Redistribution> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromARGB(0,0,0,0),
+          backgroundColor: Color.fromARGB(0, 0, 0, 0),
           textColor: Color.fromARGB(255, 99, 154, 125),
           fontSize: 15.0);
     }

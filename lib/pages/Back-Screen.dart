@@ -29,12 +29,12 @@ class BackScreenState extends State<BackScreen> {
         height: 400,
         padding: const EdgeInsets.all(20),
         alignment: Alignment.center,
-        child: const Column(
+        child: Column(
           children: [
-            SizedBox(height: 30),
-            Icon(Icons.location_pin, size: 100, color: Color(0xFFF3D758)),
-            SizedBox(height: 5),
-            Text(
+            const SizedBox(height: 30),
+            const Icon(Icons.location_pin, size: 100, color: Color(0xFFF3D758)),
+            const SizedBox(height: 5),
+            const Text(
               'الرجاء السماح\n بتعقب موقع الجهاز',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -44,14 +44,21 @@ class BackScreenState extends State<BackScreen> {
                 color: Color.fromARGB(255, 99, 154, 125),
               ),
             ),
-            SizedBox(height: 10),
-            Text(
-              'السماح بتعقب الموقع يزيد من سهولة\n التوصل لحل سريع ومناسب ',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Tajawal',
-                fontSize: 15,
-                color: Color.fromARGB(255, 99, 154, 125),
+            const SizedBox(height: 10),
+            MaterialButton(
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              elevation: 5.0,
+              height: 40,
+              onPressed: () {},
+              color: const Color.fromARGB(255, 99, 154, 125),
+              child: const Text(
+                "    اضغط للسماح بالوصول    ",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
