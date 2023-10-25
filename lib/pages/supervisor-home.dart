@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:hima_front_end/pages/Messages.dart';
 import 'package:hima_front_end/pages/officerList.dart';
 //import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hima_front_end/pages/signin_auth.dart';
@@ -45,6 +49,7 @@ class SupervisorState extends State<SupervisorHomepage> {
 
   Future<void> numOfficerInArea() async {
     List<int> OfficerNum = [0, 0, 0, 0];
+    User? user = FirebaseAuth.instance.currentUser;
     final QuerySnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection("users").get();
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
@@ -66,31 +71,49 @@ class SupervisorState extends State<SupervisorHomepage> {
   }
 
   @override
+  void initState() {
+    Messages msgObj = Messages();
+    msgObj.requestPermission();
+    msgObj.getToken();
+    msgObj.SupinitInfo();
+    super.initState();
+    _startTimer();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       //Whole page white background
       //extendBodyBehindAppBar: true, //Extend scaffold body to eliminate appbar
       //Appbar only contains Hima logo
       appBar: AppBar(
-        toolbarHeight: 60, //appbar height
+        toolbarHeight: 80, //appbar height was 60
         //padding method necessary to push logo to right
         title: Row(children: [
-          Image.asset(
-            'assets/images/Hima_logo.jpg',
-            height: 45,
-            width: 45,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              'assets/images/Hima_logo.jpg',
+              height: 70, // was 45
+              width: 70, // was 45
+              fit: BoxFit.contain,
+            ),
           ),
           const SizedBox(
-            width: 190,
+            width: 225,
           ),
-          FloatingActionButton(
-            mini: true,
-            onPressed: () async {
-              await signOut();
-            },
-            backgroundColor: const Color.fromARGB(255, 99, 154, 125),
-            child: const Icon(Icons.logout_outlined,
-                size: 20, color: Colors.white),
+          SizedBox(
+            width: 55,
+            height: 55,
+            child: FloatingActionButton(
+              mini: true,
+              onPressed: () async {
+                await signOut();
+              },
+              backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+              child: const Icon(Icons.logout_outlined,
+                  size: 25, color: Colors.white), //Size was 20
+            ),
           ),
         ]),
         backgroundColor: const Color.fromARGB(
@@ -99,7 +122,7 @@ class SupervisorState extends State<SupervisorHomepage> {
       ),
       //wrapped scaffold body with container to control alignment
       body: Container(
-        height: 600,
+        height: 900, //was 600
         padding: const EdgeInsets.only(top: 10),
         color: Colors.white,
         alignment: Alignment.center,
@@ -107,8 +130,9 @@ class SupervisorState extends State<SupervisorHomepage> {
           children: [
             Image.asset(
               'assets/images/ring.png',
-              height: 84,
-              width: 84,
+              height: 200, //was 84
+              width: 200, //was 84
+              fit: BoxFit.contain,
             ),
 
             //Container for areas feed buttons
@@ -123,7 +147,7 @@ class SupervisorState extends State<SupervisorHomepage> {
                     const Text(
                       "لا يوجد زحام",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 99, 154, 125),
                       ),
@@ -133,17 +157,11 @@ class SupervisorState extends State<SupervisorHomepage> {
                             15), //to space out components in green container (rectangle)
                     //row container for area word
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        //just to make space
-                        Container(
-                          color: Colors.white,
-                          height: 27,
-                          width: 168,
-                        ),
-                        //the right container which show area word
                         Container(
                             alignment: Alignment.center,
-                            margin: const EdgeInsets.fromLTRB(3, 3, 8, 3),
+                            margin: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color:
@@ -153,13 +171,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                                   const BorderRadius.all(Radius.circular(6.0)),
                               color: const Color.fromARGB(255, 99, 154, 125),
                             ),
-                            height: 32,
-                            width: 80,
+                            height: 36, // was 32
+                            width: 90, // was 80
                             child: const Text(
                               "المنطقة",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 20, // was 17
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             )),
@@ -171,71 +189,67 @@ class SupervisorState extends State<SupervisorHomepage> {
                 ),
               ),
             ),
-            //Container for last row in body column (for new distribution button)
-            Container(
-              margin: const EdgeInsets.only(top: 9),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(width: 40),
-                  SizedBox(
-                    height: 25,
-                    width: 85,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Redistribution()));
-                      }, //button action for redistribution page---------------------------------------------IMPORTANT
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent),
-                      child: Text('اضغط هنا',
-                          style: TextStyle(shadows: [
-                            Shadow(
-                              blurRadius: 5.0,
-                              // color of the shadow
-                              color: Colors.black.withOpacity(0.5),
-                              offset: const Offset(0, 2),
-                            ),
-                          ], color: Colors.grey, fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    "تقسيم جديد؟",
-                    style: TextStyle(
-                      shadows: [
-                        Shadow(
-                          blurRadius: 5.0,
-                          // color of the shadow
-                          color: Colors.black.withOpacity(0.5),
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                      fontWeight: FontWeight.bold,
-                      color: const Color.fromARGB(255, 99, 154, 125),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  FloatingActionButton(
-                    mini: true,
-                    onPressed: () async {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OfficerList()));
-                    },
-                    backgroundColor: const Color.fromARGB(255, 99, 154, 125),
-                    child: const Icon(Icons.people_rounded,
-                        size: 20, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 50),
+            SizedBox(height: 40),
           ],
         ),
+      ),
+      bottomNavigationBar: Directionality(
+        textDirection: TextDirection.rtl,
+        child: GNav(
+            selectedIndex: 0,
+            onTabChange: (index) {
+              if (index == 1) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Redistribution(
+                            zone1: 50,
+                            zone2: 50,
+                            zone3: 50,
+                            zone4: 50,
+                            isModel: false)));
+              } else if (index == 2) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => OfficerList()));
+              }
+            },
+            curve: Curves.easeInOut, // tab animation curves
+            gap: 8, // the tab button gap between icon and text
+            color: const Color.fromARGB(
+                123, 255, 255, 255), // unselected icon color
+            backgroundColor: const Color.fromARGB(255, 99, 154, 125),
+            activeColor: Colors.white, // selected icon and text color
+            iconSize: 27, // tab button icon size
+            tabBackgroundColor: const Color.fromARGB(
+                57, 255, 255, 255), // selected tab background color
+            tabMargin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8), // navigation bar padding
+            tabs: const <GButton>[
+              GButton(
+                icon: Icons.home,
+                text: 'الرئيسية',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              GButton(
+                icon: Icons.group_add_rounded,
+                text: 'تقسيم جديد',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              GButton(
+                icon: Icons.groups_2_rounded,
+                text: 'قائمة الضباط',
+                textStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
       ),
     );
   }
@@ -252,8 +266,8 @@ class SupervisorState extends State<SupervisorHomepage> {
         } else {
           return SizedBox(
             //size of the outer box list
-            height: 200,
-            width: 250,
+            height: 200, //was 200
+            width: 320, //was 250
             //list view builder
             child: ListView.builder(
               padding: const EdgeInsets.all(5),
@@ -267,10 +281,11 @@ class SupervisorState extends State<SupervisorHomepage> {
                   color: Colors.white,
                   //Row has different container boxes of information
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       //first left container has the total number of officers in one area
                       Container(
-                          margin: const EdgeInsets.fromLTRB(15, 3, 3, 3),
+                          margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: const Color.fromARGB(255, 99, 154, 125),
@@ -279,13 +294,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                                 const BorderRadius.all(Radius.circular(6.0)),
                             color: const Color.fromARGB(255, 99, 154, 125),
                           ),
-                          height: 27,
-                          width: 30,
+                          height: 36, // was 27
+                          width: 45, // was 30
                           child: Text(
                             "${totalOfficers[index]}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           )),
@@ -296,13 +311,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                             "ضابط من",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 20, //was 15
                                 color: Color.fromARGB(255, 99, 154, 125),
                                 fontWeight: FontWeight.bold),
                           )),
                       // middle container to show the number of officer are in the area in the moment
                       Container(
-                          margin: const EdgeInsets.fromLTRB(3, 3, 3, 3),
+                          margin: const EdgeInsets.all(10), //was 3
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: const Color.fromARGB(255, 99, 154, 125),
@@ -311,13 +326,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                                 const BorderRadius.all(Radius.circular(6.0)),
                             color: const Color.fromARGB(255, 99, 154, 125),
                           ),
-                          height: 27,
-                          width: 30,
+                          height: 36, // was 27
+                          width: 45, // was 30
                           child: Text(
                             "${existOfficers[index]}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           )),
@@ -332,13 +347,13 @@ class SupervisorState extends State<SupervisorHomepage> {
                                 const BorderRadius.all(Radius.circular(6.0)),
                             color: const Color.fromARGB(255, 99, 154, 125),
                           ),
-                          height: 27,
+                          height: 30, // was 27
                           width: 80,
                           child: Text(
                             "${area[index]}",
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           )),
@@ -352,4 +367,88 @@ class SupervisorState extends State<SupervisorHomepage> {
       },
     );
   }
+  //----------------------------------------model listner--------------------------------------------------
+
+  /*@override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }*/
+
+  void _startTimer() {
+    // Start the timer to compare documents every 5 minutes
+    Timer.periodic(const Duration(minutes: 1), (timer) {
+      _compareDocuments();
+    });
+  }
+
+  void _compareDocuments() {
+    final firestore = FirebaseFirestore.instance;
+    final collectionReference = firestore.collection('redistribution');
+
+    // Fetch the first document
+    collectionReference.doc('current').get().then((snapshot1) {
+      if (snapshot1.exists) {
+        // Fetch the second document
+        collectionReference.doc('official').get().then((snapshot2) {
+          if (snapshot2.exists) {
+            // Compare the documents
+            final data1 = snapshot1.data();
+            final data2 = snapshot2.data();
+
+            // Perform your comparison logic here
+            if (data1!['Zone-A'] != data2!['Zone-A']) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Redistribution(
+                          zone1: data1['Zone-A'],
+                          zone2: data1['Zone-B'],
+                          zone3: data1['Zone-C'],
+                          zone4: data1['Zone-D'],
+                          isModel: true)));
+            } else if (data1['Zone-B'] != data2['Zone-B']) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Redistribution(
+                          zone1: data1['Zone-A'],
+                          zone2: data1['Zone-B'],
+                          zone3: data1['Zone-C'],
+                          zone4: data1['Zone-D'],
+                          isModel: true)));
+            } else if (data1['Zone-C'] != data2['Zone-C']) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Redistribution(
+                          zone1: data1['Zone-A'],
+                          zone2: data1['Zone-B'],
+                          zone3: data1['Zone-C'],
+                          zone4: data1['Zone-D'],
+                          isModel: true)));
+            } else if (data1['Zone-D'] != data2['Zone-D']) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Redistribution(
+                          zone1: data1['Zone-A'],
+                          zone2: data1['Zone-B'],
+                          zone3: data1['Zone-C'],
+                          zone4: data1['Zone-D'],
+                          isModel: true)));
+            }
+
+            // Print the result
+            print('Comparison Result: $data1 vs $data2');
+          } else {
+            print('Document2 does not exist');
+          }
+        });
+      } else {
+        print('Document1 does not exist');
+      }
+    });
+  }
+  //----------------------------------------model listner--------------------------------------------------
 }

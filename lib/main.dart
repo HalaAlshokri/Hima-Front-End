@@ -1,5 +1,8 @@
+import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
 import 'package:hima_front_end/pages/officer.dart';
 import 'package:hima_front_end/pages/splash.dart';
@@ -8,6 +11,16 @@ import 'package:hima_front_end/pages/supervisor-home.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseMessaging.instance.getInitialMessage();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  log(
+    (await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()!
+            .requestPermission())
+        .toString(),
+  );
   runApp(MyApp());
 }
 
