@@ -11,7 +11,6 @@ class BackScreen extends StatefulWidget {
 
 class BackScreenState extends State<BackScreen> {
   //------------------------------Location test------------------------------------
-  Position? position;
   late bool servicePermission = false;
   late LocationPermission permission;
   bool isEnabled = false;

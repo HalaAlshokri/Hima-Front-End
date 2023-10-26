@@ -6,13 +6,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hima_front_end/pages/Back-Screen.dart';
 import 'package:hima_front_end/pages/Messages.dart';
 import 'package:hima_front_end/pages/map.dart';
 import 'package:hima_front_end/pages/signin_auth.dart';
-import 'package:maps_toolkit/maps_toolkit.dart';
 
 class OfficerHomepage extends StatefulWidget {
   const OfficerHomepage({super.key});
@@ -41,64 +39,12 @@ class OfficerHomepageState extends State<OfficerHomepage> {
         context, MaterialPageRoute(builder: (context) => SignIn()));
   }
 
-//to be deleted no need for it
-  Future<void> reachLocation() async {
-    if (isArrive) {
-      _updateArea();
-    }
-  }
-
-  void notificationTimer() {
-    if (isArrive == false) {
-      print('Timer expired');
-      setState(() {
-        isNotify = false;
-        isArrive = true;
-      });
-      Fluttertoast.showToast(
-        msg: "تاخرت انتهت 5 دقائق",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Color(0xFFF3D758),
-        textColor: Colors.white,
-        fontSize: 15.0,
-      );
-    }
-  }
-
-  void _updateArea() {
-    /**update oLocation value for current user */
-    User? user = FirebaseAuth.instance.currentUser;
-    final _firestore = FirebaseFirestore.instance;
-    _firestore
-        .collection("users")
-        .doc(user?.uid)
-        .set({"oLocation": area}, SetOptions(merge: true));
-    if (isNotify) {
-      Fluttertoast.showToast(
-        msg: "وصلت الى الوجهه المطلوبة",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Color.fromARGB(255, 99, 154, 125),
-        textColor: Colors.white,
-        fontSize: 15.0,
-      );
-      setState(() {
-        isNotify = false;
-        isArrive = true;
-      });
-    }
-  }
-
   //--------------location------------------
-  Position? _currentlocation;
   late bool servicePermission = false;
   late LocationPermission permission;
   bool isDenied = false;
 
-  Future<Position> _getCurrentLocation() async {
+  Future<void> _getCurrentLocation() async {
     servicePermission = await Geolocator.isLocationServiceEnabled();
     if (!servicePermission) {
       isDenied = true;
@@ -122,81 +68,7 @@ class OfficerHomepageState extends State<OfficerHomepage> {
           context, MaterialPageRoute(builder: (context) => BackScreen()));
     }
     print('location accessed');
-    return await Geolocator.getCurrentPosition();
   }
-
-  static const LocationSettings locationSettings = LocationSettings(
-    accuracy: LocationAccuracy.high,
-    distanceFilter: 100,
-  );
-  StreamSubscription<Position>? positionStream;
-  void _locationListener() {
-    positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
-      if (position != null) {
-        setState(() {
-          _currentlocation = position;
-          isArrive = _testArea(
-              LatLng(_currentlocation!.latitude, _currentlocation!.longitude),
-              area);
-        });
-        print('new listener position is ' +
-            (position.latitude.toString()) +
-            ' and ' +
-            (position.longitude.toString()));
-      }
-    });
-  }
-
-  //---------------test area-----------
-  bool _testArea(LatLng currentPoint, int assigned) {
-    List<LatLng> boundArea1 = [];
-    //road in nimra mosque
-    boundArea1.add(LatLng(21.3527671, 39.9639548));
-    boundArea1.add(LatLng(21.3504605, 39.9678601));
-    boundArea1.add(LatLng(21.3503943, 39.9677769));
-    boundArea1.add(LatLng(21.352672, 39.963899));
-
-    List<LatLng> boundArea2 = [];
-    //other side road in nimra mosque
-    boundArea2.add(LatLng(21.3552368, 39.9656999));
-    boundArea2.add(LatLng(21.3529654, 39.9697091));
-    boundArea2.add(LatLng(21.3528696, 39.9696565));
-    boundArea2.add(LatLng(21.3551522, 39.9656030));
-
-    List<LatLng> boundArea3 = [];
-    //arafa mountain
-    boundArea3.add(LatLng(21.3555936, 39.9822563));
-    boundArea3.add(LatLng(21.3541446, 39.9853361));
-    boundArea3.add(LatLng(21.3530196, 39.9844729));
-    boundArea3.add(LatLng(21.3541681, 39.9815856));
-
-    List<LatLng> boundArea4 = [];
-    //arafa mountain
-    boundArea4.add(LatLng(21.3564306, 39.9838213));
-    boundArea4.add(LatLng(21.3549801, 39.9856491));
-    boundArea4.add(LatLng(21.3541446, 39.9853361));
-    boundArea4.add(LatLng(21.3555936, 39.9822563));
-
-    bool contains1 =
-        PolygonUtil.containsLocation(currentPoint, boundArea1, true);
-    bool contains2 =
-        PolygonUtil.containsLocation(currentPoint, boundArea2, true);
-    bool contains3 =
-        PolygonUtil.containsLocation(currentPoint, boundArea3, true);
-    bool contains4 =
-        PolygonUtil.containsLocation(currentPoint, boundArea4, true);
-    if ((contains1 && assigned == 1) ||
-        (contains2 && assigned == 2) ||
-        (contains3 && assigned == 3) ||
-        (contains4 && assigned == 4)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  //---------------end test area-----------
 
   @override
   void initState() {
@@ -208,15 +80,6 @@ class OfficerHomepageState extends State<OfficerHomepage> {
     msgObject.getToken();
     OffinitInfo();
     _getCurrentLocation();
-    _locationListener();
-  }
-
-  @override
-  void dispose() {
-    if (positionStream != null) {
-      positionStream!.cancel();
-    }
-    super.dispose;
   }
 
   @override
@@ -395,8 +258,6 @@ class OfficerHomepageState extends State<OfficerHomepage> {
           isArrive = false;
           msg = ("${event.notification!.body}");
           area = int.parse(msg.substring(msg.length - 1));
-          reachLocation()
-              .timeout(Duration(minutes: 5), onTimeout: notificationTimer);
         });
         await flutterLocalNotificationsPlugin.show(
             0,

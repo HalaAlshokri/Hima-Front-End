@@ -12,9 +12,9 @@ class OfficerList extends StatefulWidget {
 
 class _OfficerListState extends State<OfficerList> {
   //officers information in list
-  List<String> name = ['afrah', 'nora', 'hala', 'jumanah'];
-  List<String> status = ['Available', 'Available', 'not', 'not'];
-  List<int> location = [1, 3, 4, 2];
+  List<String> name = [];
+  List<String> status = [];
+  List<int> location = [];
 
   //retreiving officers info
   Future<void> officersInfo() async {
@@ -22,15 +22,17 @@ class _OfficerListState extends State<OfficerList> {
     final QuerySnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection("users").get();
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
-      if (doc.data()['role'] == 'officer') {
-        name.add(doc.data()['name']);
-        print(doc.data()['name']);
+      if (doc.data().isNotEmpty) {
+        if (doc.data()['role'] == 'officer') {
+          name.add(doc.data()['name']);
+          print(doc.data()['name']);
 
-        status.add(doc.data()['oStatus']);
-        print(doc.data()['oStatus']);
+          status.add(doc.data()['oStatus']);
+          print(doc.data()['oStatus']);
 
-        location.add(doc.data()['oLocation']);
-        print(doc.data()['oLocation'].toString());
+          location.add(doc.data()['oLocation']);
+          print(doc.data()['oLocation'].toString());
+        }
       }
     }
     //await Future.delayed(const Duration(seconds: 3), () {});
@@ -100,7 +102,7 @@ class _OfficerListState extends State<OfficerList> {
                                   tileColor: Colors.white,
                                   trailing: fixedTextBlack(
                                       location[index].toString()),
-                                  leading: icontest(status, index),
+                                  leading: icontest(status[index]),
                                   titleAlignment: ListTileTitleAlignment.center,
                                   title: Center(
                                     child: fixedTextBlack(name[index]),
@@ -134,10 +136,10 @@ class _OfficerListState extends State<OfficerList> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const Redistribution(
-                            zone1: 50,
-                            zone2: 50,
-                            zone3: 50,
-                            zone4: 50,
+                            zone1: 25,
+                            zone2: 25,
+                            zone3: 25,
+                            zone4: 25,
                             isModel: false)));
               }
             },
@@ -204,17 +206,22 @@ class _OfficerListState extends State<OfficerList> {
     );
   }
 
-  Widget icontest(List<String> status, int index) {
-    if (status[index] == 'Available') {
-      return const Icon(
-        Icons.check_circle_rounded,
-        color: Color.fromARGB(255, 99, 154, 125),
-      );
-    } else {
-      return const Icon(
-        Icons.do_not_disturb_on_rounded,
+  Widget fixedTextYellow(String word) {
+    return Text(
+      word,
+      style: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
         color: Color(0xFFF3D758),
-      );
+      ),
+    );
+  }
+
+  Widget icontest(String status) {
+    if (status == 'Available') {
+      return fixedTextBlack('متاح');
+    } else {
+      return fixedTextYellow('مشغول');
     }
   }
 }
