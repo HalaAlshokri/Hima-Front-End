@@ -35,6 +35,7 @@ class _OfficerListState extends State<OfficerList> {
         }
       }
     }
+    setState(() {});
     //await Future.delayed(const Duration(seconds: 3), () {});
   }
 

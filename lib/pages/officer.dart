@@ -73,13 +73,17 @@ class OfficerHomepageState extends State<OfficerHomepage> {
   @override
   void initState() {
     super.initState();
-    setState(() async {
-      area = await getOfficerLocation();
+    setState(() {
+      setarea();
     });
     msgObject.requestPermission();
     msgObject.getToken();
     OffinitInfo();
     _getCurrentLocation();
+  }
+
+  setarea() async {
+    return await getOfficerLocation();
   }
 
   @override
