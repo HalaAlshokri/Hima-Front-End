@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:hima_front_end/pages/officer.dart';
 
 class BackScreen extends StatefulWidget {
   const BackScreen({super.key});
@@ -8,6 +10,48 @@ class BackScreen extends StatefulWidget {
 }
 
 class BackScreenState extends State<BackScreen> {
+  //------------------------------Location test------------------------------------
+  Position? position;
+  late bool servicePermission = false;
+  late LocationPermission permission;
+  bool isEnabled = false;
+
+  Future<void> _getLocationPermission() async {
+    servicePermission = await Geolocator.isLocationServiceEnabled();
+    if (!servicePermission) {
+      return Future.error('Location services are disabled.');
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+    if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
+      print('location enabled');
+      isEnabled = true;
+    }
+    if (isEnabled) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => OfficerHomepage()));
+    }
+  }
+  //------------------------------Location test------------------------------------
+
+  @override
+  void initState() {
+    super.initState();
+    //handling location
+    _getLocationPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,10 +94,21 @@ class BackScreenState extends State<BackScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               elevation: 5.0,
               height: 40,
-              onPressed: () {},
+              onPressed: () {
+                setState(() async {
+                  permission = await Geolocator.requestPermission();
+                  if (permission == LocationPermission.always ||
+                      permission == LocationPermission.whileInUse) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OfficerHomepage()));
+                  }
+                });
+              },
               color: const Color.fromARGB(255, 99, 154, 125),
               child: const Text(
-                "    اضغط للسماح بالوصول    ",
+                "     اضغط للسماح بالوصول للموقع    ",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
