@@ -36,7 +36,7 @@ class SupervisorHomepage extends StatefulWidget {
 
 class SupervisorState extends State<SupervisorHomepage> {
   final List<String> area = ['1', '2', '3', '4'];
-  List<int> totalOfficers = [50, 50, 50, 50];
+  List<int> totalOfficers = [25, 25, 25, 25];
   List<int> existOfficers = [0, 0, 0, 0];
   final FirebaseAuth auth = FirebaseAuth.instance;
   //signout:

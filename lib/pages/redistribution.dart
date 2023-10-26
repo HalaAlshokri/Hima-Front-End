@@ -49,7 +49,7 @@ class Redistribution extends StatefulWidget {
 
 class RedistributionState extends State<Redistribution> {
   //const RedistributionState({super.key});
-  int initialValue = 50;
+  int initialValue = 25;
   //initial value of officer in each area
 
   List<int> cont = []; // = [50, 50, 50, 50];

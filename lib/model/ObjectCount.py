@@ -9,28 +9,28 @@ from keras.models import load_model  # TensorFlow is required for Keras to work
 np.set_printoptions(suppress=True)
 
 # Load the models
-TMmodel = load_model("keras_Model.h5", compile=False)
+TMmodel = load_model(r"C:\GithubRepos\Hima-Local-Repo\Hima-Front-End\lib\model\keras_model.h5", compile=False)
 #YOLOmodel=YOLO('yolov8l') #to be deleted
-YOLOmodel=YOLO('best(YOLOv8L).pt') #Loading our custom model
+YOLOmodel=YOLO(r'C:\GithubRepos\Hima-Local-Repo\Hima-Front-End\lib\model\best(YOLOv8L).pt') #Loading our custom model
 
 # Load the labels
 class_names = ["Normal", "Crowd"]
 #open("labels.txt", "r").readlines()
 
 #Open camera source/s
-IMAGE_SOURCE1=cv2.VideoCapture("assets/videos/Arafah.mp4")
-IMAGE_SOURCE2=cv2.VideoCapture("assets/videos/Arafah(2).mp4")
-IMAGE_SOURCE3=cv2.VideoCapture("assets/videos/Haram.mp4") #C:\Users\Hala's Laptop\Documents\YOLOv8 Everything\YOLOv8 Custom\
+IMAGE_SOURCE1=cv2.VideoCapture(r"C:\GithubRepos\Hima-Local-Repo\Hima-Front-End\assets\videos\Arafah.mp4")
+IMAGE_SOURCE2=cv2.VideoCapture(r"C:\GithubRepos\Hima-Local-Repo\Hima-Front-End\assets\videos\Arafah(2).mp4")
+IMAGE_SOURCE3=cv2.VideoCapture(r"C:\GithubRepos\Hima-Local-Repo\Hima-Front-End\assets\videos\Haram.mp4") #C:\Users\Hala's Laptop\Documents\YOLOv8 Everything\YOLOv8 Custom\
 IMAGE_SOURCE4=cv2.VideoCapture(0)
 
 sources_array=[IMAGE_SOURCE1,IMAGE_SOURCE2,IMAGE_SOURCE3,IMAGE_SOURCE4]
 
 # creating a dictionary (Area : Officers)
 areas = {
-    "Zone A": 50, 
-    "Zone B": 50,
-    "Zone C": 50,
-    "Zone D": 50
+    "Zone A": 25, 
+    "Zone B": 25,
+    "Zone C": 25,
+    "Zone D": 25
 }
 
 #Method to predict number of heads in a single frame
