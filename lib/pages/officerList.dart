@@ -22,21 +22,17 @@ class _OfficerListState extends State<OfficerList> {
     final QuerySnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection("users").get();
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
-      if (doc.data().isNotEmpty) {
-        if (doc.data()['role'] == 'officer') {
-          name.add(doc.data()['name']);
-          print(doc.data()['name']);
+      if (doc.data()['role'] == 'officer') {
+        name.add(doc.data()['name']);
+        print(doc.data()['name']);
 
-          status.add(doc.data()['oStatus']);
-          print(doc.data()['oStatus']);
+        status.add(doc.data()['oStatus']);
+        print(doc.data()['oStatus']);
 
-          location.add(doc.data()['oLocation']);
-          print(doc.data()['oLocation'].toString());
-        }
+        location.add(doc.data()['oLocation']);
+        print(doc.data()['oLocation'].toString());
       }
     }
-    setState(() {});
-    //await Future.delayed(const Duration(seconds: 3), () {});
   }
 
   @override

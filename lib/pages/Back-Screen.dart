@@ -93,17 +93,17 @@ class BackScreenState extends State<BackScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               elevation: 5.0,
               height: 40,
-              onPressed: () {
-                setState(() async {
-                  permission = await Geolocator.requestPermission();
-                  if (permission == LocationPermission.always ||
+              onPressed: ()async {
+                
+               permission = await Geolocator.requestPermission();
+               if (permission == LocationPermission.always ||
                       permission == LocationPermission.whileInUse) {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => OfficerHomepage()));
-                  }
-                });
+
+               }
               },
               color: const Color.fromARGB(255, 99, 154, 125),
               child: const Text(
