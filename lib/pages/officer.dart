@@ -49,20 +49,22 @@ class OfficerHomepageState extends State<OfficerHomepage> {
   }
 
   void notificationTimer() {
-    print('Timer expired');
-    setState(() {
-      isNotify = false;
-      isArrive = true;
-    });
-    Fluttertoast.showToast(
-      msg: "تاخرت انتهت 5 دقائق",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Color(0xFFF3D758),
-      textColor: Colors.white,
-      fontSize: 15.0,
-    );
+    if (isArrive == false) {
+      print('Timer expired');
+      setState(() {
+        isNotify = false;
+        isArrive = true;
+      });
+      Fluttertoast.showToast(
+        msg: "تاخرت انتهت 5 دقائق",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Color(0xFFF3D758),
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
   }
 
   void _updateArea() {
