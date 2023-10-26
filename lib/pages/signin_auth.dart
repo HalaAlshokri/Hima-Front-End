@@ -67,6 +67,7 @@ class SignInState extends State<SignIn> {
                           errMessage,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
+                            fontFamily: 'Tajawal',
                               fontSize: 15,
                               color: Color(0xFFF3D758),
                               fontWeight: FontWeight.bold),
@@ -118,8 +119,12 @@ class SignInState extends State<SignIn> {
         errMessage = "البريد الالكتروني أو كلمة المرور خاطئة\nحاول مرة أخرى";
         print('Document does not exist on the database');
       }
+      setState(() {
+        
+      });
     });
   }
+  
 
   void signIn(String email, String password) async {
     if (_formkey.currentState!.validate()) {
@@ -137,6 +142,9 @@ class SignInState extends State<SignIn> {
           errMessage = "البريد الالكتروني أو كلمة المرور خاطئة\nحاول مرة أخرى";
           print('Wrong password provided for that user.');
         }
+        setState(() {
+          
+        });
       }
     }
   }
@@ -161,12 +169,13 @@ class SignInState extends State<SignIn> {
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             contentPadding:
-                EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+                EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 0),
             //filled: true,
             border: InputBorder.none,
             icon: Icon(Icons.person, color: Color.fromARGB(255, 99, 154, 125)),
-            hintText: (' البريد الالكتروني'),
+            hintText: ('البريد الالكتروني'),
             labelStyle: TextStyle(
+              fontFamily: 'Tajawal',
               fontSize: 15,
             ),
           ),
@@ -207,6 +216,8 @@ class SignInState extends State<SignIn> {
           controller: passwordController,
           obscureText: _isObscure3,
           decoration: InputDecoration(
+            contentPadding:
+                EdgeInsets.only(top: 8, bottom: 5, left: 10, right: 0),
             border: InputBorder.none,
             suffixIcon: IconButton(
                 icon: Icon(
@@ -224,6 +235,7 @@ class SignInState extends State<SignIn> {
             ),
             hintText: 'كلمة المرور',
             labelStyle: const TextStyle(
+              fontFamily: 'Tajawal',
               fontSize: 15,
             ),
           ),
@@ -248,8 +260,10 @@ class SignInState extends State<SignIn> {
 
   Widget submitButton() {
     return MaterialButton(
+      
+      padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          borderRadius: BorderRadius.all(Radius.circular(7.0))),
       elevation: 5.0,
       height: 40,
       onPressed: () {
@@ -257,11 +271,12 @@ class SignInState extends State<SignIn> {
       },
       color: const Color.fromARGB(255, 99, 154, 125),
       child: const Text(
-        "    تسجيل الدخول     ",
+        "          تسجيل الدخول           ",
         style: TextStyle(
           color: Colors.white,
+          fontFamily: 'Tajawal',
           fontSize: 20,
-          fontWeight: FontWeight.bold,
+         // fontWeight: FontWeight.bold,
         ),
       ),
     );

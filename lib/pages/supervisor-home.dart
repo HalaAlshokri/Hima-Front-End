@@ -123,15 +123,15 @@ class SupervisorState extends State<SupervisorHomepage> {
       //wrapped scaffold body with container to control alignment
       body: Container(
         height: 900, //was 600
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 70,left: 15),
         color: Colors.white,
         alignment: Alignment.center,
         child: Column(
           children: [
             Image.asset(
               'assets/images/ring.png',
-              height: 200, //was 84
-              width: 200, //was 84
+              height: 150, //was 84
+              width: 150, //was 84
               fit: BoxFit.contain,
             ),
 
@@ -145,9 +145,10 @@ class SupervisorState extends State<SupervisorHomepage> {
                 child: Column(
                   children: [
                     const Text(
-                      "لا يوجد زحام",
+                      "لا يوجد ازدحام",
                       style: TextStyle(
-                        fontSize: 25,
+                        fontFamily: 'Tajawal',
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 99, 154, 125),
                       ),
@@ -159,6 +160,9 @@ class SupervisorState extends State<SupervisorHomepage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                         const SizedBox(
+                        width:
+                            195),
                         Container(
                             alignment: Alignment.center,
                             margin: const EdgeInsets.all(10),
@@ -177,6 +181,7 @@ class SupervisorState extends State<SupervisorHomepage> {
                               "المنطقة",
                               textAlign: TextAlign.center,
                               style: TextStyle(
+                                  fontFamily: 'Tajawal',
                                   fontSize: 20, // was 17
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
@@ -229,25 +234,28 @@ class SupervisorState extends State<SupervisorHomepage> {
                 icon: Icons.home,
                 text: 'الرئيسية',
                 textStyle: TextStyle(
+                    fontFamily: 'Tajawal',
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
               GButton(
                 icon: Icons.group_add_rounded,
                 text: 'تقسيم جديد',
                 textStyle: TextStyle(
+                    fontFamily: 'Tajawal',
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
               GButton(
                 icon: Icons.groups_2_rounded,
                 text: 'قائمة الضباط',
                 textStyle: TextStyle(
+                    fontFamily: 'Tajawal',
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
             ]),
       ),

@@ -57,7 +57,46 @@ class _OfficerListState extends State<OfficerList> {
           color: Colors.white,
           alignment: Alignment.center,
           child: Column(children: [
-            Card(
+            Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: Color.fromARGB(255, 99, 154, 125), width: 1.0),
+                borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                color: Color.fromARGB(255, 99, 154, 125),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    height: 40,
+                    width: 100,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5),
+                    color: const Color.fromARGB(0, 255, 255, 255),
+                    child: fixedTextWhite("الحالة"),
+                  ),
+                  Container(
+                    height: 40,
+                    width: 179,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5),
+                    color: const Color.fromARGB(0, 255, 255, 255),
+                    child: fixedTextWhite("الاسم"),
+                  ),
+                  Container(
+                    height: 40,
+                    width: 100,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5),
+                    color: const Color.fromARGB(0, 255, 255, 255),
+                    child: fixedTextWhite("المنطقة"),
+                  )
+                ],
+              ),
+            ),
+           /* Card(
               color: const Color.fromARGB(255, 99, 154, 125),
               child: ListTile(
                 trailing: fixedTextWhite('المنطقة'),
@@ -68,7 +107,7 @@ class _OfficerListState extends State<OfficerList> {
                   child: fixedTextWhite('الاسم'),
                 ),
               ),
-            ),
+            ),*/
             const SizedBox(
               height: 10,
             ),
@@ -94,18 +133,46 @@ class _OfficerListState extends State<OfficerList> {
                           delegate: SliverChildBuilderDelegate(
                             childCount: name.length,
                             (BuildContext context, int index) {
-                              return Card(
+                              return Row(
+                                children: [
+                                  Container(
+                                    height: 30,
+                                    width: 120,
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.all(5),
+                                    color: Colors.white,
+                                    child: icontest(status[index]),
+                                  ),Container(
+                                    height: 30,
+                                    width: 177,
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.all(5),
+                                    color: Colors.white,
+                                    child:nametest(status[index], name[index]),
+                                  ),Container(
+                                    height: 30,
+                                    width: 100,
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.all(5),
+                                    color: Colors.white,
+                                    child: locationtest(status[index],
+                                      location[index].toString()),
+                                  )
+                                ],
+              );
+                              
+                              /*Card(
                                 child: ListTile(
                                   tileColor: Colors.white,
-                                  trailing: fixedTextBlack(
+                                  trailing: locationtest(status[index],
                                       location[index].toString()),
                                   leading: icontest(status[index]),
                                   titleAlignment: ListTileTitleAlignment.center,
                                   title: Center(
-                                    child: fixedTextBlack(name[index]),
+                                    child: nametest(status[index], name[index]),
                                   ),
                                 ),
-                              );
+                              );*/
                             },
                           ),
                         ),
@@ -156,25 +223,28 @@ class _OfficerListState extends State<OfficerList> {
                 icon: Icons.home,
                 text: 'الرئيسية',
                 textStyle: TextStyle(
+                    fontFamily: 'Tajawal',
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
               GButton(
                 icon: Icons.group_add_rounded,
                 text: 'تقسيم جديد',
                 textStyle: TextStyle(
+                    fontFamily: 'Tajawal',
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
               GButton(
                 icon: Icons.groups_2_rounded,
                 text: 'قائمة الضباط',
                 textStyle: TextStyle(
+                    fontFamily: 'Tajawal',
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
             ]),
       ),
@@ -185,6 +255,7 @@ class _OfficerListState extends State<OfficerList> {
     return Text(
       word,
       style: const TextStyle(
+        fontFamily: 'Tajawal',
         fontSize: 15,
         fontWeight: FontWeight.bold,
         color: Color.fromARGB(255, 255, 255, 255),
@@ -196,9 +267,10 @@ class _OfficerListState extends State<OfficerList> {
     return Text(
       word,
       style: const TextStyle(
+        fontFamily: 'Tajawal',
         fontSize: 15,
         fontWeight: FontWeight.bold,
-        color: Color.fromARGB(255, 0, 0, 0),
+                color: Color.fromARGB(255, 99, 154, 125),
       ),
     );
   }
@@ -207,6 +279,7 @@ class _OfficerListState extends State<OfficerList> {
     return Text(
       word,
       style: const TextStyle(
+        fontFamily: 'Tajawal',
         fontSize: 15,
         fontWeight: FontWeight.bold,
         color: Color(0xFFF3D758),
@@ -214,11 +287,25 @@ class _OfficerListState extends State<OfficerList> {
     );
   }
 
+
   Widget icontest(String status) {
-    if (status == 'Available') {
+    if (status == 'available') {
       return fixedTextBlack('متاح');
     } else {
       return fixedTextYellow('مشغول');
     }
   }
-}
+  Widget nametest(String status, String name) {
+    if (status == 'available') {
+      return fixedTextBlack(name);
+    } else {
+      return fixedTextYellow(name);
+    }
+  }
+  
+  Widget locationtest(String status, String num) {
+    if (status == 'available') {
+      return fixedTextBlack(num);
+    } else {
+      return fixedTextYellow(num);
+    }}}

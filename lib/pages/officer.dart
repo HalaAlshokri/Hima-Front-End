@@ -144,19 +144,23 @@ class OfficerHomepageState extends State<OfficerHomepage> {
           const SizedBox(height: 150),
           Image.asset('assets/images/noassigned.png'),
           Padding(padding: EdgeInsets.only(top: 240.0)),
-          TextButton(
-            child: const Text(
-              "إبلاغ عن المنطقة ",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                fontSize: 20,
-                color: const Color.fromARGB(255, 99, 154, 125),
-              ),
-            ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                backgroundColor: Color.fromARGB(255, 99, 154, 125),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(7.0)))),
             onPressed: () {
               support();
             },
+            child: const Text(
+              "إبلاغ عن المنطقة ",
+              style: TextStyle(
+                fontFamily: 'Tajawal',
+                fontSize: 20,
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
+            ),
           ),
         ],
       ),
@@ -170,28 +174,31 @@ class OfficerHomepageState extends State<OfficerHomepage> {
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 60),
+          const SizedBox(height: 130),
           Image.asset(
             'assets/images/ringing.png',
-            width: 200,
-            height: 200,
+            width: 150,
+            height: 150,
             fit: BoxFit.contain,
           ),
           const SizedBox(height: 20),
-          Text(
-            msg,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Tajawal',
-              fontWeight: FontWeight.bold,
-              fontSize: 36,
-              color: Color.fromARGB(255, 99, 154, 125),
+          Padding(
+            padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+            child: Text(
+              msg,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Tajawal',
+                fontWeight: FontWeight.bold,
+                fontSize: 40,
+                color: Color.fromARGB(255, 99, 154, 125),
+              ),
             ),
           ),
           const SizedBox(height: 20),
           MaterialButton(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                borderRadius: BorderRadius.all(Radius.circular(7.0))),
             elevation: 5.0,
             height: 50,
             onPressed: () {
@@ -206,9 +213,9 @@ class OfficerHomepageState extends State<OfficerHomepage> {
             child: const Text(
               "    رؤية الخريطة     ",
               style: TextStyle(
+                fontFamily: 'Tajawal',
                 color: Colors.white,
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -280,7 +287,10 @@ class OfficerHomepageState extends State<OfficerHomepage> {
           title: Text(
             'ادخل عدد الضباط المراد',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Tajawal'),
           ),
           content: TextField(
             textAlign: TextAlign.center,
@@ -297,8 +307,10 @@ class OfficerHomepageState extends State<OfficerHomepage> {
               alignment: Alignment.center,
               child: TextButton(
                 child: Text('إرسال',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Tajawal')),
                 onPressed: () async {
                   Navigator.of(context).pop();
                   ReportArea(int.parse(desiredOfficerNum));
