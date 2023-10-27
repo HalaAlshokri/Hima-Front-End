@@ -151,10 +151,10 @@ class RedistributionState extends State<Redistribution> {
                           color: containerColor,
                         ),
                         height: 27,
-                        width: 168,
+                        width: 180,
                         child: fixedTextStyle("عدد الضباط"),
                       ),
-                      SizedBox(width: 21),
+                      SizedBox(width: 12),
                       //the right container which show area word
                       Container(
                         alignment: Alignment.center,
@@ -213,25 +213,28 @@ class RedistributionState extends State<Redistribution> {
                 icon: Icons.home,
                 text: 'الرئيسية',
                 textStyle: TextStyle(
+                    fontFamily: 'Tajawal',
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
               GButton(
                 icon: Icons.group_add_rounded,
                 text: 'تقسيم جديد',
                 textStyle: TextStyle(
+                    fontFamily: 'Tajawal',
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
               GButton(
                 icon: Icons.groups_2_rounded,
                 text: 'قائمة الضباط',
                 textStyle: TextStyle(
+                    fontFamily: 'Tajawal',
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
             ]),
       ),
@@ -252,6 +255,7 @@ class RedistributionState extends State<Redistribution> {
         const Text(
           "توجد حالة ازدحام",
           style: TextStyle(
+            fontFamily: 'Tajawal',
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Color(0xFFF3D758),
@@ -265,17 +269,18 @@ class RedistributionState extends State<Redistribution> {
           //padding: EdgeInsets.only(left: 20, top: 20, right: 20, bottom: 0),
           width: 310.0,
           height: 30.0,
-          //color: Color.fromARGB(255, 202, 223, 212),
-          decoration: BoxDecoration(
-            border: Border.all(
-                color: const Color.fromARGB(255, 99, 154, 125), width: 1.0),
-            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            color: const Color.fromARGB(255, 99, 154, 125),
-          ),
+          color: Color.fromARGB(255, 255, 255, 255),
 
           //column represents inside green contaainer
           child: Center(
-            child: fixedTextStyle("تقسيم جديد للضباط"),
+            child: Text(
+              "تقسيم جديد للضباط",
+              style: TextStyle(
+                  fontFamily: 'Tajawal',
+                  fontSize: 25,
+                  color: Color.fromARGB(255, 99, 154, 125),
+                  fontWeight: FontWeight.bold),
+            ),
           ));
     }
   }
@@ -286,7 +291,10 @@ class RedistributionState extends State<Redistribution> {
       word,
       textAlign: TextAlign.center,
       style: const TextStyle(
-          fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold),
+          fontFamily: 'Tajawal',
+          fontSize: 17,
+          color: Color.fromARGB(255, 255, 255, 255),
+          fontWeight: FontWeight.bold),
     );
   }
 

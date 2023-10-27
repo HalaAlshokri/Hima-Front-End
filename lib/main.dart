@@ -1,10 +1,15 @@
 import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
+import 'package:hima_front_end/pages/Back-Screen.dart';
+import 'package:hima_front_end/pages/map.dart';
 import 'package:hima_front_end/pages/officer.dart';
+import 'package:hima_front_end/pages/officerList.dart';
+import 'package:hima_front_end/pages/signin_auth.dart';
 import 'package:hima_front_end/pages/splash.dart';
 import 'package:hima_front_end/pages/supervisor-home.dart';
 
@@ -51,17 +56,17 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: startScreen(), //method to spicify the show screen
+      home: SupervisorHomepage(), //method to spicify the show screen
     );
   }
 
   Widget startScreen() {
-    if (getID() == '') {
-      return Splash();
-    } else if (getRole() == "officer") {
-      return OfficerHomepage();
-    } else {
+    if (getID() == 'supervisor') {
       return SupervisorHomepage();
+    } else if (getRole() == "officer") {
+      return BackScreen();
+    } else {
+      return Splash();
     }
   }
 

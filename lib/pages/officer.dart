@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_session_manager/flutter_session_manager.dart';
-import 'package:hima_front_end/pages/map.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:hima_front_end/pages/Back-Screen.dart';
 import 'package:hima_front_end/pages/Messages.dart';
+import 'package:hima_front_end/pages/map.dart';
 import 'package:hima_front_end/pages/signin_auth.dart';
 
 class OfficerHomepage extends StatefulWidget {
@@ -19,8 +22,9 @@ class OfficerHomepage extends StatefulWidget {
 class OfficerHomepageState extends State<OfficerHomepage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   bool isNotify = false;
+  bool isArrive = true;
 
-  int area = 1; //------------to assigned area not this //map conflict?
+  int area = 1;
   String msg = "";
   String desiredOfficerNum = "";
   Messages msgObject = Messages();
@@ -34,23 +38,52 @@ class OfficerHomepageState extends State<OfficerHomepage> {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => SignIn()));
   }
-//to be deleted no need for it
-  /* Future<void> getMessage() async {
-    //message method
-    await Future.delayed(const Duration(seconds: 5), () {});
-    setState(() {
-      isNotify = true;
-    });
-  }*/
+
+  //--------------location------------------
+  late bool servicePermission = false;
+  late LocationPermission permission;
+  bool isDenied = false;
+
+  Future<void> _getCurrentLocation() async {
+    servicePermission = await Geolocator.isLocationServiceEnabled();
+    if (!servicePermission) {
+      isDenied = true;
+      return Future.error('Location services are disabled.');
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        isDenied = true;
+        return Future.error('Location permissions are denied');
+      }
+    }
+    if (isDenied) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => BackScreen()));
+    }
+    print('location accessed');
+  }
 
   @override
-  /**/ void initState() {
+  void initState() {
     super.initState();
+    setState(() {
+      setarea();
+    });
     msgObject.requestPermission();
     msgObject.getToken();
     OffinitInfo();
-    //handling to show the sign in screen
-    //getMessage();
+    _getCurrentLocation();
+  }
+
+  setarea() async {
+    return await getOfficerLocation();
   }
 
   @override
@@ -111,19 +144,23 @@ class OfficerHomepageState extends State<OfficerHomepage> {
           const SizedBox(height: 150),
           Image.asset('assets/images/noassigned.png'),
           Padding(padding: EdgeInsets.only(top: 240.0)),
-          TextButton(
-            child: const Text(
-              "إبلاغ عن المنطقة ",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                fontSize: 20,
-                color: const Color.fromARGB(255, 99, 154, 125),
-              ),
-            ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                backgroundColor: Color.fromARGB(255, 99, 154, 125),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(7.0)))),
             onPressed: () {
               support();
             },
+            child: const Text(
+              "إبلاغ عن المنطقة ",
+              style: TextStyle(
+                fontFamily: 'Tajawal',
+                fontSize: 20,
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
+            ),
           ),
         ],
       ),
@@ -137,28 +174,31 @@ class OfficerHomepageState extends State<OfficerHomepage> {
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 60),
+          const SizedBox(height: 130),
           Image.asset(
             'assets/images/ringing.png',
-            width: 200,
-            height: 200,
+            width: 150,
+            height: 150,
             fit: BoxFit.contain,
           ),
           const SizedBox(height: 20),
-          Text(
-            msg,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Tajawal',
-              fontWeight: FontWeight.bold,
-              fontSize: 36,
-              color: Color.fromARGB(255, 99, 154, 125),
+          Padding(
+            padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+            child: Text(
+              msg,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Tajawal',
+                fontWeight: FontWeight.bold,
+                fontSize: 40,
+                color: Color.fromARGB(255, 99, 154, 125),
+              ),
             ),
           ),
           const SizedBox(height: 20),
           MaterialButton(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                borderRadius: BorderRadius.all(Radius.circular(7.0))),
             elevation: 5.0,
             height: 50,
             onPressed: () {
@@ -167,15 +207,15 @@ class OfficerHomepageState extends State<OfficerHomepage> {
                   MaterialPageRoute(
                       builder: (context) => MapScreen(
                             area: area,
-                          ))); //////////////////////fix to assigned area
+                          )));
             },
             color: const Color.fromARGB(255, 99, 154, 125),
             child: const Text(
               "    رؤية الخريطة     ",
               style: TextStyle(
+                fontFamily: 'Tajawal',
                 color: Colors.white,
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -222,16 +262,20 @@ class OfficerHomepageState extends State<OfficerHomepage> {
         NotificationDetails(android: androidNotificationDetails);
     // Firebase Message Recieving Code
     FirebaseMessaging.onMessage.listen((event) async {
-      print("${event.notification!.body}");
-      setState(() {
-        isNotify = true;
-        msg = ("${event.notification!.body}");
-      });
-      await flutterLocalNotificationsPlugin.show(
-          0,
-          "${event.notification!.title}",
-          "${event.notification!.body}",
-          notificationDetails);
+      if (event.notification != null) {
+        print("${event.notification!.body}");
+        setState(() {
+          isNotify = true;
+          isArrive = false;
+          msg = ("${event.notification!.body}");
+          area = int.parse(msg.substring(msg.length - 1));
+        });
+        await flutterLocalNotificationsPlugin.show(
+            0,
+            "${event.notification!.title}",
+            "${event.notification!.body}",
+            notificationDetails);
+      }
     });
   }
 
@@ -243,7 +287,10 @@ class OfficerHomepageState extends State<OfficerHomepage> {
           title: Text(
             'ادخل عدد الضباط المراد',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Tajawal'),
           ),
           content: TextField(
             textAlign: TextAlign.center,
@@ -260,8 +307,10 @@ class OfficerHomepageState extends State<OfficerHomepage> {
               alignment: Alignment.center,
               child: TextButton(
                 child: Text('إرسال',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Tajawal')),
                 onPressed: () async {
                   Navigator.of(context).pop();
                   ReportArea(int.parse(desiredOfficerNum));
