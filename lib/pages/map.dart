@@ -262,17 +262,17 @@ class MapScreenState extends State<MapScreen> {
           _controller.complete(controller);
         },
       ),
-      /*floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           toNewArea();
         },
         backgroundColor: Colors.white,
         label: const Text("المنطقة الجديدة",
-        style: TextStyle(fontFamily: 'Tajawal',color: Colors.black, fontSize: 20)),
+            style: TextStyle(
+                fontFamily: 'Tajawal', color: Colors.black, fontSize: 20)),
         icon: const Icon(Icons.fmd_good_rounded,
             color: Color.fromARGB(255, 179, 0, 0)),
-      ),*/
-      
+      ),
     );
   }
 
