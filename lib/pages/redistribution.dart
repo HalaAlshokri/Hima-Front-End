@@ -460,7 +460,7 @@ class RedistributionState extends State<Redistribution> {
       final status = doc.data()['oStatus'];
       final token = doc.data()['token'];
       if ((location == 2 || location == 3) &&
-          status == "avaliable" &&
+          status == "available" &&
           requiredA != A) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 1');
@@ -471,7 +471,7 @@ class RedistributionState extends State<Redistribution> {
         continue;
       }
       if ((location == 1 || location == 3) &&
-          status == "avaliable" &&
+          status == "available" &&
           requiredB != B) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 2');
@@ -482,7 +482,7 @@ class RedistributionState extends State<Redistribution> {
         continue;
       }
       if ((location == 2 || location == 4) &&
-          status == "avaliable" &&
+          status == "available" &&
           requiredC != C) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 3');
@@ -493,7 +493,7 @@ class RedistributionState extends State<Redistribution> {
         continue;
       }
       if ((location == 2 || location == 3) &&
-          status == "avaliable" &&
+          status == "available" &&
           requiredD != D) {
         print(
             'assign officer with the ID: ${doc.id}, and token: $token to area 4');
